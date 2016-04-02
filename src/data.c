@@ -117,20 +117,6 @@ data_file_open(char *name)
 	}
 }
 
-int
-data_file_size(data_file_t *file)
-{
-	int s;
-	if (path.zip) {
-		/* not implemented */
-	} else {
-		fseek((FILE *)file, 0, SEEK_END);
-		s = ftell((FILE *)file);
-		fseek((FILE *)file, 0, SEEK_SET);
-	}
-	return s;
-}
-
 /*
  * Seek.
  */
