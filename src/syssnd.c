@@ -211,8 +211,8 @@ syssnd_play(sound_t *sound, S8 loop)
 {
   S8 c;
 
-  if (!isAudioActive) return -1;
-  if (sound == NULL) return -1;
+  if (!isAudioActive) return;
+  if (sound == NULL) return;
 
   c = 0;
   SDL_mutexP(sndlock);
@@ -238,8 +238,6 @@ syssnd_play(sound_t *sound, S8 loop)
     channel[c].len = sound->len;
   }
   SDL_mutexV(sndlock);
-
-  return c;
 }
 
 /*
