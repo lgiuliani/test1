@@ -346,7 +346,10 @@ syssnd_load(char *name)
 
 	/* open */
 	if (sdlRWops_open(context, name) == -1)
+	{
+		free(context);
 		return NULL;
+	}
 
 	/* alloc sound */
 	s = malloc(sizeof(sound_t));
