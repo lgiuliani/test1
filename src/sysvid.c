@@ -173,8 +173,7 @@ void
 sysvid_init(void)
 {
   SDL_Surface *s;
-  U8 *mask, tpix;
-  U32 len, i;
+  U8 tpix;
 
   IFDEBUG_VIDEO(printf("xrick/video: start\n"););
 
@@ -197,28 +196,11 @@ sysvid_init(void)
 	       IMG_ICON->colors[tpix].g,
 	       IMG_ICON->colors[tpix].b);
     );
-	/*
-
-	* old dirty stuff to implement transparency. SetColorKey does it
-	* on Windows w/out problems. Linux? FIXME!
-
-  len = IMG_ICON->w * IMG_ICON->h;
-  mask = (U8 *)malloc(len/8);
-  memset(mask, 0, len/8);
-  for (i = 0; i < len; i++)
-    if (IMG_ICON->pixels[i] != tpix) mask[i/8] |= (0x80 >> (i%8));
-	*/
-  /*
-   * FIXME
-   * Setting a mask produces strange results depending on the
-   * Window Manager. On fvwm2 it is shifted to the right ...
-   */
-  /*SDL_WM_SetIcon(s, mask);*/
-	SDL_SetColorKey(s,
-                    SDL_SRCCOLORKEY,
+  SDL_SetColorKey(s, SDL_SRCCOLORKEY,
                     SDL_MapRGB(s->format,IMG_ICON->colors[tpix].r,IMG_ICON->colors[tpix].g,IMG_ICON->colors[tpix].b));
 
   SDL_WM_SetIcon(s, NULL);
+  SDL_FreeSurface(s);
 
   /* video modes and screen */
   videoFlags = SDL_HWSURFACE|SDL_HWPALETTE;
