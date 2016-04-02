@@ -144,10 +144,6 @@ map_chain(void)
   game_chsm = 0;
   e_sbonus_counting = FALSE;
 
-  /* find connection */
-  c = map_submaps[game_submap].connect;
-  t = 3;
-
   IFDEBUG_MAPS(
     sys_printf("xrick/maps: chain submap=%#04x frow=%#04x .connect=%#04x %s\n",
 	       game_submap, map_frow, c,
