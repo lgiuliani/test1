@@ -42,7 +42,7 @@ static SDL_mutex *sndlock;
 static int sdlRWops_open(SDL_RWops *context, char *name);
 static int sdlRWops_seek(SDL_RWops *context, int offset, int whence);
 static int sdlRWops_read(SDL_RWops *context, void *ptr, int size, int maxnum);
-static int sdlRWops_write(SDL_RWops *context, const void *ptr, int size, int num);
+/*static int sdlRWops_write(SDL_RWops *context, const void *ptr, int size, int num);*/
 static int sdlRWops_close(SDL_RWops *context);
 static void end_channel(U8);
 
@@ -206,7 +206,7 @@ syssnd_vol(S8 d)
  * twice the same sound playing -- tends to become noisy when too many
  * bad guys die at the same time).
  */
-S8
+void
 syssnd_play(sound_t *sound, S8 loop)
 {
   S8 c;
@@ -343,7 +343,7 @@ syssnd_load(char *name)
 	context = malloc(sizeof(SDL_RWops));
 	context->seek = sdlRWops_seek;
 	context->read = sdlRWops_read;
-	context->write = sdlRWops_write;
+	/*context->write = sdlRWops_write;*/
 	context->close = sdlRWops_close;
 
 	/* open */
@@ -408,14 +408,14 @@ sdlRWops_read(SDL_RWops *context, void *ptr, int size, int maxnum)
 {
 	return data_file_read((data_file_t *)(context->hidden.unknown.data1), ptr, size, maxnum);
 }
-
+/*
 static int
 sdlRWops_write(SDL_RWops *context, const void *ptr, int size, int num)
 {
-	/* not implemented */
+	// not implemented 
 	return -1;
 }
-
+*/
 static int
 sdlRWops_close(SDL_RWops *context)
 {
