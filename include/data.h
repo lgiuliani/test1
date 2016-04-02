@@ -26,7 +26,6 @@ extern void data_closepath();
 extern data_file_t *data_file_open(char *);
 extern int data_file_seek(data_file_t *file, long offset, int origin);
 extern int data_file_tell(data_file_t *file);
-extern int data_file_size(data_file_t *file);
 extern int data_file_read(data_file_t *, void *, size_t, size_t);
 extern void data_file_close(data_file_t *);
 
