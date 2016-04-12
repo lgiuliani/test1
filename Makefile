@@ -71,7 +71,7 @@ endif
 all:
 	@echo "ROOTDIR=$(ROOTDIR)" > Makefile.global
 	@echo "XOBJ=$(XOBJ)" >> Makefile.global
-	@echo "CFLAGS=-g -ansi -pedantic -Wall -W -O2 -I $(ROOTDIR)/include $(shell sdl-config --cflags)" >> Makefile.global
+	@echo "CFLAGS=-g -std=c99 -pedantic -Wall -W -O2 -I $(ROOTDIR)/include $(shell sdl-config --cflags)" >> Makefile.global
 	@echo "LDFLAGS=-lz $(shell sdl-config --libs)" >> Makefile.global
 	@echo "CC=gcc" >> Makefile.global
 	@echo "CPP=gcc -E" >> Makefile.global
