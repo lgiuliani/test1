@@ -37,15 +37,11 @@ static U8 scrawl;
 
 static U8 trigger = FALSE;
 
-static S8 offsx;
-static U8 ylow;
-static S16 offsy;
+#define offsx c1
 
 static U8 seq;
 
 static U8 save_crawl;
-static U16 save_x, save_y;
-
 
 /*
  * Box test
@@ -73,9 +69,6 @@ e_rick_boxtest(U8 e)
 		return TRUE;
 }
 
-
-
-
 /*
  * Go zombie
  *
@@ -96,9 +89,9 @@ e_rick_gozombie(void)
 #endif
 
 	E_RICK_STSET(E_RICK_STZOMBIE);
-	offsy = -0x0400;
-	offsx = (E_RICK_ENT.x > 0x80 ? -3 : +3);
-	ylow = 0;
+	E_RICK_ENT.offsy = -0x0400;
+	E_RICK_ENT.offsx = (E_RICK_ENT.x > 0x80 ? -3 : +3);
+	E_RICK_ENT.ylow = 0;
 	E_RICK_ENT.front = TRUE;
 }
 
@@ -117,13 +110,13 @@ e_rick_z_action(void)
 	E_RICK_ENT.sprite = (E_RICK_ENT.x & 0x04) ? 0x1A : 0x19;
 
 	/* x */
-	E_RICK_ENT.x += offsx;
+	E_RICK_ENT.x += E_RICK_ENT.offsx;
 
 	/* y */
-	i = (E_RICK_ENT.y << 8) + offsy + ylow;
+	i = (E_RICK_ENT.y << 8) + E_RICK_ENT.offsy + E_RICK_ENT.ylow;
 	E_RICK_ENT.y = i >> 8;
-	offsy += 0x80;
-	ylow = i;
+	E_RICK_ENT.offsy += 0x80;
+	E_RICK_ENT.ylow = i;
 
 	/* dead when out of screen */
 	if (E_RICK_ENT.y < 0 || E_RICK_ENT.y > 0x0140)
@@ -160,7 +153,7 @@ e_rick_action2(void)
 	*/
 	E_RICK_STRST(E_RICK_STJUMP);
 	/* calc y */
-	i = (E_RICK_ENT.y << 8) + offsy + ylow;
+	i = (E_RICK_ENT.y << 8) + E_RICK_ENT.offsy + E_RICK_ENT.ylow;
 	y = i >> 8;
 	/* test environment */
 	u_envtest(E_RICK_ENT.x, y, E_RICK_STTST(E_RICK_STCRAWL), &env0, &env1);
@@ -168,7 +161,7 @@ e_rick_action2(void)
 	if (E_RICK_STTST(E_RICK_STCRAWL) && !env0)
 		E_RICK_STRST(E_RICK_STCRAWL);
 	/* can move vertically? */
-	if (env1 & (offsy < 0 ?
+	if (env1 & (E_RICK_ENT.offsy < 0 ?
 					MAP_EFLG_VERT|MAP_EFLG_SOLID|MAP_EFLG_SPAD :
 					MAP_EFLG_VERT|MAP_EFLG_SOLID|MAP_EFLG_SPAD|MAP_EFLG_WAYUP))
 		goto vert_not;
@@ -184,19 +177,19 @@ e_rick_action2(void)
 	}
 	/* save */
 	E_RICK_ENT.y = y;
-	ylow = i;
+	E_RICK_ENT.ylow = i;
 	/* climb? */
 	if ((env1 & MAP_EFLG_CLIMB) &&
 			(control_status & (CONTROL_UP|CONTROL_DOWN))) {
-		offsy = 0x0100;
+		E_RICK_ENT.offsy = 0x0100;
 		E_RICK_STSET(E_RICK_STCLIMB);
 		return;
 	}
 	/* fall */
-	offsy += 0x0080;
-	if (offsy > 0x0800) {
-		offsy = 0x0800;
-		ylow = 0;
+	E_RICK_ENT.offsy += 0x0080;
+	if (E_RICK_ENT.offsy > 0x0800) {
+		E_RICK_ENT.offsy = 0x0800;
+		E_RICK_ENT.ylow = 0;
 	}
 
 	/*
@@ -242,30 +235,30 @@ e_rick_action2(void)
    * NO VERTICAL MOVE
    */
  vert_not:
-  if (offsy < 0) {
+  if (E_RICK_ENT.offsy < 0) {
     /* not climbing + trying to go _up_ not possible -> hit the roof */
     E_RICK_STSET(E_RICK_STJUMP);  /* fall back to the ground */
     E_RICK_ENT.y &= 0xF8;
-    offsy = 0;
-    ylow = 0;
+    E_RICK_ENT.offsy = 0;
+    E_RICK_ENT.ylow = 0;
     goto horiz;
   }
   /* else: not climbing + trying to go _down_ not possible -> standing */
   /* align to ground */
   E_RICK_ENT.y &= 0xF8;
   E_RICK_ENT.y |= 0x03;
-  ylow = 0;
+  E_RICK_ENT.ylow = 0;
 
   /* standing on a super pad? */
-  if ((env1 & MAP_EFLG_SPAD) && offsy >= 0X0200) {
-    offsy = (control_status & CONTROL_UP) ? 0xf800 : 0x00fe - offsy;
+  if ((env1 & MAP_EFLG_SPAD) && E_RICK_ENT.offsy >= 0X0200) {
+    E_RICK_ENT.offsy = (control_status & CONTROL_UP) ? 0xf800 : 0x00fe - E_RICK_ENT.offsy;
 #ifdef ENABLE_SOUND
 	syssnd_play(WAV_PAD, 1);
 #endif
     goto horiz;
   }
 
-  offsy = 0x0100;  /* reset*/
+  E_RICK_ENT.offsy = 0x0100;  /* reset*/
 
   /* standing. firing ? */
   if (scrawl || !(control_status & CONTROL_FIRE))
@@ -340,8 +333,8 @@ e_rick_action2(void)
       E_RICK_STSET(E_RICK_STCLIMB);
       return;
     }
-    offsy = -0x0580;  /* jump */
-    ylow = 0;
+    E_RICK_ENT.offsy = -0x0580;  /* jump */
+    E_RICK_ENT.ylow = 0;
 #ifdef ENABLE_SOUND
     syssnd_play(WAV_JUMP, 1);
 #endif
@@ -393,7 +386,7 @@ e_rick_action2(void)
 				}
 				if (!(env1 & (MAP_EFLG_VERT|MAP_EFLG_CLIMB))) {
 					/* reached end of climb zone */
-					offsy = (control_status & CONTROL_UP) ? -0x0300 : 0x0100;
+					E_RICK_ENT.offsy = (control_status & CONTROL_UP) ? -0x0300 : 0x0100;
 #ifdef ENABLE_SOUND
 					if (control_status & CONTROL_UP)
 						syssnd_play(WAV_JUMP, 1);
@@ -434,7 +427,7 @@ e_rick_action2(void)
     if (env1 & (MAP_EFLG_VERT|MAP_EFLG_CLIMB)) return;
     E_RICK_STRST(E_RICK_STCLIMB);
     if (control_status & CONTROL_UP)
-      offsy = -0x0300;
+      E_RICK_ENT.offsy = -0x0300;
   }
 }
 
@@ -530,8 +523,8 @@ void e_rick_action(UNUSED(U8 e))
  */
 void e_rick_save(void)
 {
-	save_x = E_RICK_ENT.x;
-	save_y = E_RICK_ENT.y;
+	E_RICK_ENT.xsave = E_RICK_ENT.x;
+	E_RICK_ENT.ysave = E_RICK_ENT.y;
 	save_crawl = E_RICK_STTST(E_RICK_STCRAWL);
 	/* FIXME
 	 * save_C0 = E_RICK_ENT.b0C;
@@ -547,8 +540,8 @@ void e_rick_save(void)
  */
 void e_rick_restore(void)
 {
-	E_RICK_ENT.x = save_x;
-	E_RICK_ENT.y = save_y;
+	E_RICK_ENT.x = E_RICK_ENT.xsave;
+	E_RICK_ENT.y = E_RICK_ENT.ysave;
 	E_RICK_ENT.front = FALSE;
 	if (save_crawl)
 		E_RICK_STSET(E_RICK_STCRAWL);
