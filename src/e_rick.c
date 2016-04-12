@@ -33,15 +33,12 @@ U8 e_rick_state = 0;
 /*
  * local vars
  */
+#define offsx  c1
 static U8 scrawl;
-
-static U8 trigger = FALSE;
-
-#define offsx c1
-
-static U8 seq;
-
 static U8 save_crawl;
+static U8 trigger = FALSE;
+static U8 seq;
+static U16 save_x, save_y;
 
 /*
  * Box test
@@ -523,8 +520,8 @@ void e_rick_action(UNUSED(U8 e))
  */
 void e_rick_save(void)
 {
-	E_RICK_ENT.xsave = E_RICK_ENT.x;
-	E_RICK_ENT.ysave = E_RICK_ENT.y;
+	save_x = E_RICK_ENT.x;
+	save_y = E_RICK_ENT.y;
 	save_crawl = E_RICK_STTST(E_RICK_STCRAWL);
 	/* FIXME
 	 * save_C0 = E_RICK_ENT.b0C;
@@ -540,8 +537,8 @@ void e_rick_save(void)
  */
 void e_rick_restore(void)
 {
-	E_RICK_ENT.x = E_RICK_ENT.xsave;
-	E_RICK_ENT.y = E_RICK_ENT.ysave;
+	E_RICK_ENT.x = save_x;
+	E_RICK_ENT.y = save_y;
 	E_RICK_ENT.front = FALSE;
 	if (save_crawl)
 		E_RICK_STSET(E_RICK_STCRAWL);
@@ -552,8 +549,5 @@ void e_rick_restore(void)
 	 * plus some 6DBC stuff?
 	 */
 }
-
-
-
-
+#undef offsx 
 /* eof */
