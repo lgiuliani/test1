@@ -1,6 +1,0 @@
-ROOTDIR=/home/m345048/test1
-XOBJ=xrick.res
-CFLAGS=-g -std=c99 -pedantic -Wall -W -O2 -I /home/m345048/test1/include -I/mingw64/include/SDL -D_GNU_SOURCE=1 -Dmain=SDL_main
-LDFLAGS=-lz -L/mingw64/lib -lmingw32 -lSDLmain -lSDL -mwindows
-CC=gcc
-CPP=gcc -E
