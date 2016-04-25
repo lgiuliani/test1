@@ -181,7 +181,7 @@ game_toggleCheat(uint8_t nbr)
  * Music
  */
 void
-game_setmusic(char *name, uint8_t loop)
+game_setmusic(char *name, int8_t loop)
 {
 	if (music_snd)
 		game_stopmusic();

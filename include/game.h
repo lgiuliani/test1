@@ -55,7 +55,7 @@ extern uint8_t game_period;     /* time between each frame, in millisecond */
 extern rect_t *game_rects; /* rectangles to redraw at each frame */
 
 extern void game_run(void);
-extern void game_setmusic(char *name, uint8_t loop);
+extern void game_setmusic(char *name, int8_t loop);
 extern void game_stopmusic(void);
 
 
