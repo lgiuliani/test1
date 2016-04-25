@@ -31,9 +31,9 @@
 
 typedef struct {
 	sound_t *snd;
-	U8 *buf;
-	U32 len;
-	S8 loop;
+	uint8_t *buf;
+	uint32_t len;
+	int8_t loop;
 } channel_t;
 
 #endif /* ENABLE_SOUND */

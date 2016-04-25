@@ -35,7 +35,7 @@ rects_free(rect_t *r) {
  * Add a rectangle to a list of rectangles
  */
 rect_t *
-rects_new(U16 x, U16 y, U16 width, U16 height, rect_t *next)
+rects_new(uint16_t x, uint16_t y, uint16_t width, uint16_t height, rect_t *next)
 {
   rect_t *r;
 

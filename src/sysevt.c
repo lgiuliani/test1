@@ -39,7 +39,7 @@ static SDL_Event event;
 static void
 processEvent()
 {
-	U16 key;
+	uint16_t key;
 #ifdef ENABLE_FOCUS
 	SDL_ActiveEvent *aevent;
 #endif

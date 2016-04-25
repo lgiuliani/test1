@@ -70,11 +70,11 @@ sys_printf(char *msg, ...)
 /*
  * Return number of microseconds elapsed since first call
  */
-U32
+uint32_t
 sys_gettime(void)
 {
-  static U32 ticks_base = 0;
-  U32 ticks;
+  static uint32_t ticks_base = 0;
+  uint32_t ticks;
 
   ticks = SDL_GetTicks();
 

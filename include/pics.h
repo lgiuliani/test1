@@ -14,9 +14,9 @@
 #ifndef _PICS_H
 #define _PICS_H
 
-extern U32 pic_haf[];
-extern U32 pic_congrats[];
-extern U32 pic_splash[];
+extern uint32_t pic_haf[];
+extern uint32_t pic_congrats[];
+extern uint32_t pic_splash[];
 
 #endif
 

@@ -25,7 +25,7 @@ static SDL_Joystick *j = NULL;
 void
 sysjoy_init(void)
 {
-  U8 i, jcount;
+  uint8_t i, jcount;
 
   if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
     IFDEBUG_JOYSTICK(

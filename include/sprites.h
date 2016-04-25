@@ -14,7 +14,7 @@
 /*
  * NOTES -- PC version
  *
- * A sprite consists in 4 columns and 0x15 rows of (U16 mask, U16 pict),
+ * A sprite consists in 4 columns and 0x15 rows of (uint16_t mask, uint16_t pict),
  * each pair representing 8 pixels (cga encoding, two bits per pixels).
  * Sprites are stored in 'sprites.bin' and are loaded by spr_init. Memory
  * is freed by spr_shutdown.
@@ -35,8 +35,8 @@
 #define SPRITES_NBR_SPRITES (0x9b)
 
 typedef struct {
-  U16 mask;
-  U16 pict;
+  uint16_t mask;
+  uint16_t pict;
 } spriteX_t;
 
 typedef spriteX_t sprite_t[4][0x15];   /* one sprite */
@@ -49,7 +49,7 @@ extern sprite_t sprites_data[SPRITES_NBR_SPRITES];
 
 #define SPRITES_NBR_SPRITES (0xD5)
 
-typedef U32 sprite_t[0x54];  /* 0x15 per 0x04 */
+typedef uint32_t sprite_t[0x54];  /* 0x15 per 0x04 */
 
 extern sprite_t sprites_data[SPRITES_NBR_SPRITES];
 

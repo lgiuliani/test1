@@ -18,7 +18,7 @@
 #include "system.h"
 #include "pics.h"
 
-U32 pic_congrats[] =
+uint32_t pic_congrats[] =
 {
   0000000000,
   0000000000,
@@ -1302,7 +1302,7 @@ U32 pic_congrats[] =
   0000000000,
 };
 
-U32 pic_haf[] =
+uint32_t pic_haf[] =
 {
   0000000000,
   0000000000,
@@ -2586,7 +2586,7 @@ U32 pic_haf[] =
   0000000000,
 };
 
-U32 pic_splash[] =
+uint32_t pic_splash[] =
 {
   0000000000,
   0000000000,

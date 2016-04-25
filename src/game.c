@@ -55,24 +55,24 @@ typedef enum {
 /*
  * global vars
  */
-U8 game_period = 0;
+uint8_t game_period = 0;
 bool game_waitevt = false;
 rect_t *game_rects = NULL;
 
-U8 game_lives = 0;
-U8 game_bombs = 0;
-U8 game_bullets = 0;
-U32 game_score = 0;
+uint8_t game_lives = 0;
+uint8_t game_bombs = 0;
+uint8_t game_bullets = 0;
+uint32_t game_score = 0;
 
-U16 game_map = 0;
-U16 game_submap = 0;
+uint16_t game_map = 0;
+uint16_t game_submap = 0;
 
-U8 game_dir = 0;
+uint8_t game_dir = 0;
 bool game_chsm = false;
 
-U8 game_cheat1 = 0;
-U8 game_cheat2 = 0;
-U8 game_cheat3 = 0;
+uint8_t game_cheat1 = 0;
+uint8_t game_cheat2 = 0;
+uint8_t game_cheat3 = 0;
 
 #ifdef GFXST
 hscore_t game_hscores[8] = {
@@ -120,7 +120,7 @@ sound_t *WAV_ENTITY[10];
 /*
  * local vars
  */
-static U8 isave_frow;
+static uint8_t isave_frow;
 static game_state_t game_state;
 #ifdef ENABLE_SOUND
 static sound_t *music_snd;
@@ -146,7 +146,7 @@ static void freedata(void);
  */
 #ifdef ENABLE_CHEATS
 void
-game_toggleCheat(U8 nbr)
+game_toggleCheat(uint8_t nbr)
 {
   if (game_state != INTRO_MAIN && game_state != INTRO_MAP &&
       game_state != GAMEOVER && game_state != GETNAME &&
@@ -181,7 +181,7 @@ game_toggleCheat(U8 nbr)
  * Music
  */
 void
-game_setmusic(char *name, U8 loop)
+game_setmusic(char *name, uint8_t loop)
 {
 	if (music_snd)
 		game_stopmusic();
@@ -207,7 +207,7 @@ game_stopmusic(void)
 void
 game_run(void)
 {
-  U32 tm, tmx;
+  uint32_t tm, tmx;
 
 	loaddata(); /* load cached data */
 
@@ -465,7 +465,7 @@ frame(void)
 	else {  /* initialize game */
 	  ent_ents[1].x = map_maps[game_map].x;
 	  ent_ents[1].y = map_maps[game_map].y;
-	  map_frow = (U8)map_maps[game_map].row;
+	  map_frow = (uint8_t)map_maps[game_map].row;
 	  game_submap = map_maps[game_map].submap;
 	  game_state = CHAIN_END;
 	}
@@ -565,7 +565,7 @@ frame(void)
 static void
 init(void)
 {
-  U8 i;
+  uint8_t i;
 
   E_RICK_STRST(0xff);
 
@@ -578,7 +578,7 @@ init(void)
 
   if (sysarg_args_submap == 0) {
     game_submap = map_maps[game_map].submap;
-    map_frow = (U8)map_maps[game_map].row;
+    map_frow = (uint8_t)map_maps[game_map].row;
   }
   else {
     /* dirty hack to determine frow */

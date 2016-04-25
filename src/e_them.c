@@ -28,12 +28,12 @@
 /*
  * public vars
  */
-U32 e_them_rndseed = 0;
+uint32_t e_them_rndseed = 0;
 
 /*
  * local vars
  */
-static U16 e_them_rndnbr = 0;
+static uint16_t e_them_rndnbr = 0;
 
 /*
  * Check if entity boxtests with a lethal e_them i.e. something lethal
@@ -44,10 +44,10 @@ static U16 e_them_rndnbr = 0;
  * e: entity slot number.
  * ret: true/boxtests, false/not
  */
-U8
-u_themtest(U8 e)
+uint8_t
+u_themtest(uint8_t e)
 {
-  U8 i;
+  uint8_t i;
 
   if ((ent_ents[0].n & ENT_LETHAL) && u_boxtest(e, 0))
     return true;
@@ -66,7 +66,7 @@ u_themtest(U8 e)
  * ASM 237B
  */
 void
-e_them_gozombie(U8 e)
+e_them_gozombie(uint8_t e)
 {
 #define offsx c1
   ent_ents[e].n = 0x47;  /* zombie entity */
@@ -96,13 +96,13 @@ e_them_gozombie(U8 e)
  * ASM 2242
  */
 void
-e_them_t1_action2(U8 e, U8 type)
+e_them_t1_action2(uint8_t e, uint8_t type)
 {
 #define offsx c1
 #define step_count c2
-  U32 i;
-  S16 x, y;
-  U8 env0, env1;
+  uint32_t i;
+  int16_t x, y;
+  uint8_t env0, env1;
 
   /* by default, try vertical move. calculate new y */
   i = (ent_ents[e].y << 8) + ent_ents[e].offsy + ent_ents[e].ylow;
@@ -213,7 +213,7 @@ e_them_t1_action2(U8 e, U8 type)
  * ASM 21CF
  */
 void
-e_them_t1_action(U8 e, U8 type)
+e_them_t1_action(uint8_t e, uint8_t type)
 {
   e_them_t1_action2(e, type);
 
@@ -255,7 +255,7 @@ e_them_t1_action(U8 e, U8 type)
  * ASM 2452
  */
 void
-e_them_t1a_action(U8 e)
+e_them_t1a_action(uint8_t e)
 {
   e_them_t1_action(e, TYPE_1A);
 }
@@ -267,7 +267,7 @@ e_them_t1a_action(U8 e)
  * ASM 21CA
  */
 void
-e_them_t1b_action(U8 e)
+e_them_t1b_action(uint8_t e)
 {
   e_them_t1_action(e, TYPE_1B);
 }
@@ -279,10 +279,10 @@ e_them_t1b_action(U8 e)
  * ASM 23B8
  */
 void
-e_them_z_action(U8 e)
+e_them_z_action(uint8_t e)
 {
 #define offsx c1
-  U32 i;
+  uint32_t i;
 
   /* calc new sprite */
   ent_ents[e].sprite = ent_ents[e].sprbase
@@ -322,26 +322,26 @@ e_them_z_action(U8 e)
  * ASM 2792
  */
 void
-e_them_t2_action2(U8 e)
+e_them_t2_action2(uint8_t e)
 {
 #define flgclmb c1
 #define offsx c2
-  U32 i;
-  S16 x, y, yd;
-  U8 env0, env1;
+  uint32_t i;
+  int16_t x, y, yd;
+  uint8_t env0, env1;
 
   /*
    * vars required by the Black Magic (tm) performance at the
    * end of this function.
    */
-  static U16 bx;
-  static U8 *bl = (U8 *)&bx;
-  static U8 *bh = (U8 *)&bx + 1;
-  static U16 cx;
-  static U8 *cl = (U8 *)&cx;
-  static U8 *ch = (U8 *)&cx + 1;
-  static U16 *sl = (U16 *)&e_them_rndseed;
-  static U16 *sh = (U16 *)&e_them_rndseed + 2;
+  static uint16_t bx;
+  static uint8_t *bl = (uint8_t *)&bx;
+  static uint8_t *bh = (uint8_t *)&bx + 1;
+  static uint16_t cx;
+  static uint8_t *cl = (uint8_t *)&cx;
+  static uint8_t *ch = (uint8_t *)&cx + 1;
+  static uint16_t *sl = (uint16_t *)&e_them_rndseed;
+  static uint16_t *sh = (uint16_t *)&e_them_rndseed + 2;
 
   /*sys_printf("e_them_t2 ------------------------------\n");*/
 
@@ -511,7 +511,7 @@ e_them_t2_action2(U8 e)
  * ASM 2718
  */
 void
-e_them_t2_action(U8 e)
+e_them_t2_action(uint8_t e)
 {
   e_them_t2_action2(e);
 
@@ -561,12 +561,12 @@ e_them_t2_action(U8 e)
  * ASM: 255A
  */
 void
-e_them_t3_action2(U8 e)
+e_them_t3_action2(uint8_t e)
 {
 #define sproffs c1
 #define step_count c2
-  U8 i;
-  S16 x, y;
+  uint8_t i;
+  int16_t x, y;
 
   while (1) {
 
@@ -711,7 +711,7 @@ e_them_t3_action2(U8 e)
  * ASM 2546
  */
 void
-e_them_t3_action(U8 e)
+e_them_t3_action(uint8_t e)
 {
   e_them_t3_action2(e);
 

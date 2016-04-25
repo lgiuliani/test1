@@ -21,9 +21,9 @@
 /*
  * local vars
  */
-static U8 seq = 0;
-static U8 x, y, p;
-static U8 name[10];
+static uint8_t seq = 0;
+static uint8_t x, y, p;
+static uint8_t name[10];
 
 #define TILE_POINTER '\072'
 #define TILE_CURSOR '\073'
@@ -37,7 +37,7 @@ static U8 name[10];
 /*
  * prototypes
  */
-static void pointer_show(U8);
+static void pointer_show(uint8_t);
 static void name_update(void);
 static void name_draw(void);
 
@@ -47,11 +47,11 @@ static void name_draw(void);
  *
  * return: 0 while running, 1 when finished.
  */
-U8
+uint8_t
 screen_getname(void)
 {
-  static U32 tm = 0;
-  U8 i, j;
+  static uint32_t tm = 0;
+  uint8_t i, j;
 
   if (seq == 0) {
     /* figure out if this is a high score */
@@ -82,7 +82,7 @@ screen_getname(void)
 #ifdef GFXPC
     draw_filter = 0xffff; /* yellow */
 #endif
-    draw_tilesListImm((U8 *)"PLEASE@ENTER@YOUR@NAME\376");
+    draw_tilesListImm((uint8_t *)"PLEASE@ENTER@YOUR@NAME\376");
 #ifdef GFXPC
     draw_filter = 0x5555; /* green */
 #endif
@@ -93,10 +93,10 @@ screen_getname(void)
       }
     draw_setfb(TOPLEFT_X, TOPLEFT_Y + 64);
 #ifdef GFXST
-    draw_tilesListImm((U8 *)"Y@Z@.@@@\074\373\374\375\376");
+    draw_tilesListImm((uint8_t *)"Y@Z@.@@@\074\373\374\375\376");
 #endif
 #ifdef GFXPC
-    draw_tilesListImm((U8 *)"Y@Z@.@@@\074@\075@\376");
+    draw_tilesListImm((uint8_t *)"Y@Z@.@@@\074@\075@\376");
 #endif
     name_draw();
     pointer_show(true);
@@ -222,7 +222,7 @@ screen_getname(void)
 
 
 static void
-pointer_show(U8 show)
+pointer_show(uint8_t show)
 {
   draw_setfb(TOPLEFT_X + x * 8 * 2, TOPLEFT_Y + y * 8 * 2 + 8);
 #ifdef GFXPC
@@ -234,7 +234,7 @@ pointer_show(U8 show)
 static void
 name_update(void)
 {
-  U8 i;
+  uint8_t i;
 
   i = x + y * 6;
   if (i < 26 && p < 10)
@@ -251,7 +251,7 @@ name_update(void)
 static void
 name_draw(void)
 {
-  U8 i;
+  uint8_t i;
 
   draw_setfb(NAMEPOS_X, NAMEPOS_Y);
 #ifdef GFXPC

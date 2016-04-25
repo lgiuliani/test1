@@ -31,8 +31,8 @@
  * x,y: coordinates to test.
  * ret: true/(x,y) is within e's space, false/not.
  */
-U8
-u_fboxtest(U8 e, S16 x, S16 y)
+uint8_t
+u_fboxtest(uint8_t e, int16_t x, int16_t y)
 {
   if (ent_ents[e].x >= x ||
       ent_ents[e].x + ent_ents[e].w < x ||
@@ -55,8 +55,8 @@ u_fboxtest(U8 e, S16 x, S16 y)
  * e2: entity to test (corresponds to SI in asm code).
  * ret: true/intersect, false/not.
  */
-U8
-u_boxtest(U8 e1, U8 e2)
+uint8_t
+u_boxtest(uint8_t e1, uint8_t e2)
 {
   /* rick is special (may be crawling) */
   if (e1 == E_RICK_NO)
@@ -87,9 +87,9 @@ u_boxtest(U8 e1, U8 e2)
  * rc1: anything CHANGED to the environment flag (6DAD)
  */
 void
-u_envtest(S16 x, S16 y, U8 crawl, U8 *rc0, U8 *rc1)
+u_envtest(int16_t x, int16_t y, uint8_t crawl, uint8_t *rc0, uint8_t *rc1)
 {
-  U8 i, xx;
+  uint8_t i, xx;
 
   /* prepare for ent #0 test */
   ent_ents[ENT_ENTSNUM].x = x;
@@ -100,7 +100,7 @@ u_envtest(S16 x, S16 y, U8 crawl, U8 *rc0, U8 *rc1)
   if (y & 0x0004) i++;
 
   x += 4;
-  xx = (U8)x; /* FIXME? */
+  xx = (uint8_t)x; /* FIXME? */
 
   x = x >> 3;  /* from pixels to tiles */
   y = y >> 3;  /* from pixels to tiles */
@@ -188,10 +188,10 @@ u_envtest(S16 x, S16 y, U8 crawl, U8 *rc0, U8 *rc1)
  * ASM 126F
  * return: false if not in box, true if in box.
  */
-U8
-u_trigbox(U8 e, S16 x, S16 y)
+uint8_t
+u_trigbox(uint8_t e, int16_t x, int16_t y)
 {
-  U16 xmax, ymax;
+  uint16_t xmax, ymax;
 
   xmax = ent_ents[e].trig_x + (ent_entdata[ent_ents[e].n & 0x7F].trig_w << 3);
   ymax = ent_ents[e].trig_y + (ent_entdata[ent_ents[e].n & 0x7F].trig_h << 3);

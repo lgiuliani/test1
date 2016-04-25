@@ -14,7 +14,7 @@
 /*
  * NOTES
  *
- * A tile consists in one column and 8 rows of 8 U16 (cga encoding, two
+ * A tile consists in one column and 8 rows of 8 uint16_t (cga encoding, two
  * bits per pixel). The tl_tiles array contains all tiles, with the
  * following structure:
  *
@@ -52,10 +52,10 @@
  * one single tile
  */
 #ifdef GFXPC
-typedef U16 tile_t[TILES_SIZEOF16];
+typedef uint16_t tile_t[TILES_SIZEOF16];
 #endif
 #ifdef GFXST
-typedef U32 tile_t[0x08];
+typedef uint32_t tile_t[0x08];
 #endif
 
 /*

@@ -27,12 +27,12 @@
 
 #define ADJVOL(S) (((S)*sndVol)/SDL_MIX_MAXVOLUME)
 
-static U8 isAudioActive = false;
+static uint8_t isAudioActive = false;
 static channel_t channel[SYSSND_MIXCHANNELS];
 
-static U8 sndVol = SDL_MIX_MAXVOLUME;  /* internal volume */
-static U8 sndUVol = SYSSND_MAXVOL;  /* user-selected volume */
-static U8 sndMute = false;  /* mute flag */
+static uint8_t sndVol = SDL_MIX_MAXVOLUME;  /* internal volume */
+static uint8_t sndUVol = SYSSND_MAXVOL;  /* user-selected volume */
+static uint8_t sndMute = false;  /* mute flag */
 
 static SDL_mutex *sndlock;
 
@@ -44,7 +44,7 @@ static int sdlRWops_seek(SDL_RWops *context, int offset, int whence);
 static int sdlRWops_read(SDL_RWops *context, void *ptr, int size, int maxnum);
 /*static int sdlRWops_write(SDL_RWops *context, const void *ptr, int size, int num);*/
 static int sdlRWops_close(SDL_RWops *context);
-static void end_channel(U8);
+static void end_channel(uint8_t);
 
 /*
  * Callback -- this is also where all sound mixing is done
@@ -53,15 +53,15 @@ static void end_channel(U8);
  * may be more efficient to mix samples every frame, or maybe everytime a
  * new sound is sent to be played. I don't know.
  */
-void syssnd_callback(UNUSED(void *userdata), U8 *stream, int len)
+void syssnd_callback(UNUSED(void *userdata), uint8_t *stream, int len)
 {
-  U8 c;
-  S16 s;
-  U32 i;
+  uint8_t c;
+  int16_t s;
+  uint32_t i;
 
   SDL_mutexP(sndlock);
 
-  for (i = 0; i < (U32)len; i++) {
+  for (i = 0; i < (uint32_t)len; i++) {
     s = 0;
     for (c = 0; c < SYSSND_MIXCHANNELS; c++) {
       if (channel[c].loop != 0) {  /* channel is active */
@@ -93,7 +93,7 @@ void syssnd_callback(UNUSED(void *userdata), U8 *stream, int len)
       s += 0x80;
       if (s > 0xff) s = 0xff;
       if (s < 0x00) s = 0x00;
-      stream[i] = (U8)s;
+      stream[i] = (uint8_t)s;
     }
   }
 
@@ -103,7 +103,7 @@ void syssnd_callback(UNUSED(void *userdata), U8 *stream, int len)
 }
 
 static void
-end_channel(U8 c)
+end_channel(uint8_t c)
 {
 	channel[c].loop = 0;
 	if (channel[c].snd->dispose)
@@ -115,7 +115,7 @@ void
 syssnd_init(void)
 {
   SDL_AudioSpec desired, obtained;
-  U16 c;
+  uint16_t c;
 
   if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
     IFDEBUG_AUDIO(
@@ -185,7 +185,7 @@ syssnd_toggleMute(void)
 }
 
 void
-syssnd_vol(S8 d)
+syssnd_vol(int8_t d)
 {
   if ((d < 0 && sndUVol > 0) ||
       (d > 0 && sndUVol < SYSSND_MAXVOL)) {
@@ -207,9 +207,9 @@ syssnd_vol(S8 d)
  * bad guys die at the same time).
  */
 void
-syssnd_play(sound_t *sound, S8 loop)
+syssnd_play(sound_t *sound, int8_t loop)
 {
-  S8 c;
+  int8_t c;
 
   if (!isAudioActive) return;
   if (sound == NULL) return;
@@ -247,9 +247,9 @@ syssnd_play(sound_t *sound, S8 loop)
  * clear: true to cleanup all sounds and make sure we start from scratch
  */
 void
-syssnd_pause(U8 pause, U8 clear)
+syssnd_pause(uint8_t pause, uint8_t clear)
 {
-  U8 c;
+  uint8_t c;
 
   if (!isAudioActive) return;
 
@@ -270,7 +270,7 @@ syssnd_pause(U8 pause, U8 clear)
  * Stop a channel
  */
 void
-syssnd_stopchan(S8 chan)
+syssnd_stopchan(int8_t chan)
 {
   if (chan < 0 || chan > SYSSND_MIXCHANNELS)
     return;
@@ -286,7 +286,7 @@ syssnd_stopchan(S8 chan)
 void
 syssnd_stopsound(sound_t *sound)
 {
-	U8 i;
+	uint8_t i;
 
 	if (!sound) return;
 
@@ -302,7 +302,7 @@ syssnd_stopsound(sound_t *sound)
 int
 syssnd_isplaying(sound_t *sound)
 {
-	U8 i, playing;
+	uint8_t i, playing;
 
 	playing = 0;
 	SDL_mutexP(sndlock);
@@ -319,7 +319,7 @@ syssnd_isplaying(sound_t *sound)
 void
 syssnd_stopall(void)
 {
-	U8 i;
+	uint8_t i;
 
 	SDL_mutexP(sndlock);
 	for (i = 0; i < SYSSND_MIXCHANNELS; i++)

@@ -26,19 +26,19 @@
 /*
  * public vars
  */
-S16 e_rick_stop_x = 0;
-S16 e_rick_stop_y = 0;
-U8 e_rick_state = 0;
+int16_t e_rick_stop_x = 0;
+int16_t e_rick_stop_y = 0;
+uint8_t e_rick_state = 0;
 
 /*
  * local vars
  */
 #define offsx  c1
-static U8 scrawl;
-static U8 save_crawl;
-static U8 trigger = false;
-static U8 seq;
-static U16 save_x, save_y;
+static uint8_t scrawl;
+static uint8_t save_crawl;
+static uint8_t trigger = false;
+static uint8_t seq;
+static uint16_t save_x, save_y;
 
 /*
  * Box test
@@ -49,8 +49,8 @@ static U16 save_x, save_y;
  *    is assumed to point to rick).
  * ret: true/intersect, false/not.
  */
-U8
-e_rick_boxtest(U8 e)
+uint8_t
+e_rick_boxtest(uint8_t e)
 {
 	/*
 	 * rick: x+0x05 to x+0x11, y+[0x08 if rick's crawling] to y+0x14
@@ -101,7 +101,7 @@ e_rick_gozombie(void)
 static void
 e_rick_z_action(void)
 {
-	U32 i;
+	uint32_t i;
 
 	/* sprite */
 	E_RICK_ENT.sprite = (E_RICK_ENT.x & 0x04) ? 0x1A : 0x19;
@@ -129,9 +129,9 @@ e_rick_z_action(void)
 void
 e_rick_action2(void)
 {
-	U8 env0, env1;
-	S16 x, y;
-	U32 i;
+	uint8_t env0, env1;
+	int16_t x, y;
+	uint32_t i;
 
 	E_RICK_STRST(E_RICK_STSTOP|E_RICK_STSHOOT);
 
@@ -434,9 +434,9 @@ e_rick_action2(void)
  *
  * ASM 12CA
  */
-void e_rick_action(UNUSED(U8 e))
+void e_rick_action(UNUSED(uint8_t e))
 {
-	static U8 stopped = false; /* is this the most elegant way? */
+	static uint8_t stopped = false; /* is this the most elegant way? */
 
 	e_rick_action2();
 

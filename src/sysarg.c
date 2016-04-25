@@ -113,7 +113,7 @@ bool
 sysarg_scankeys(char *keys)
 {
 	char k[16];
-	U32 i, j;
+	uint32_t i, j;
 
 	i = 0;
 	j = 0;

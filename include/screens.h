@@ -22,28 +22,28 @@
 #define SCREEN_EXIT 2
 
 typedef struct {
-  U16 count;  /* number of loops */
-  U16 dx, dy;  /* sprite x and y deltas */
-  U16 base;  /* base for sprite numbers table */
+  uint16_t count;  /* number of loops */
+  uint16_t dx, dy;  /* sprite x and y deltas */
+  uint16_t base;  /* base for sprite numbers table */
 } screen_imapsteps_t;  /* description of one step */
 
-extern U8 screen_imapsl[];  /* sprite lists */
+extern uint8_t screen_imapsl[];  /* sprite lists */
 extern screen_imapsteps_t screen_imapsteps[];  /* map intro steps */
-extern U8 screen_imapsofs[];  /* first step for each map */
-extern U8 *screen_imaptext[];  /* map intro texts */
-extern U8 screen_imainhoft[];  /* hall of fame title */
-extern U8 screen_imainrdt[];  /*rick dangerous title */
-extern U8 screen_imaincdc[];  /* core design copyright text */
-extern U8 screen_gameovertxt[];  /* game over */
-extern U8 screen_pausedtxt[];  /* paused */
-extern U8 screen_congrats[];  /* congratulations */
+extern uint8_t screen_imapsofs[];  /* first step for each map */
+extern uint8_t *screen_imaptext[];  /* map intro texts */
+extern uint8_t screen_imainhoft[];  /* hall of fame title */
+extern uint8_t screen_imainrdt[];  /*rick dangerous title */
+extern uint8_t screen_imaincdc[];  /* core design copyright text */
+extern uint8_t screen_gameovertxt[];  /* game over */
+extern uint8_t screen_pausedtxt[];  /* paused */
+extern uint8_t screen_congrats[];  /* congratulations */
 
-extern U8 screen_xrick(void);  /* splash */
-extern U8 screen_introMain(void);  /* main intro */
-extern U8 screen_introMap(void);  /* map intro */
-extern U8 screen_gameover(void);  /* gameover */
-extern U8 screen_getname(void);  /* enter you name */
-extern void screen_pause(U8);  /* pause indicator */
+extern uint8_t screen_xrick(void);  /* splash */
+extern uint8_t screen_introMain(void);  /* main intro */
+extern uint8_t screen_introMap(void);  /* map intro */
+extern uint8_t screen_gameover(void);  /* gameover */
+extern uint8_t screen_getname(void);  /* enter you name */
+extern void screen_pause(uint8_t);  /* pause indicator */
 
 #endif
 

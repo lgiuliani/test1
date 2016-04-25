@@ -40,9 +40,9 @@ rect_t *ent_rects = NULL;
 /*
  * prototypes
  */
-static void ent_addrect(S16, S16, U16, U16);
-static bool ent_creat1(U8 *);
-static bool ent_creat2(U8 *, U16);
+static void ent_addrect(int16_t, int16_t, uint16_t, uint16_t);
+static bool ent_creat1(uint8_t *);
+static bool ent_creat2(uint8_t *, uint16_t);
 
 
 /*
@@ -53,7 +53,7 @@ static bool ent_creat2(U8 *, U16);
 void
 ent_reset(void)
 {
-  U8 i;
+  uint8_t i;
 
   E_RICK_STRST(E_RICK_STSTOP);
   e_bomb_lethal = false;
@@ -75,7 +75,7 @@ ent_reset(void)
  * return: true/OK false/not
  */
 static bool
-ent_creat1(U8 *e)
+ent_creat1(uint8_t *e)
 {
   /* look for a slot */
   for (*e = 0x04; *e < 0x09; (*e)++)
@@ -100,7 +100,7 @@ ent_creat1(U8 *e)
  * ret: true/OK false/not
  */
 static bool
-ent_creat2(U8 *e, U16 m)
+ent_creat2(uint8_t *e, uint16_t m)
 {
   /* make sure the entity created by this mark is not active already */
   for (*e = 0x09; *e < 0x0c; (*e)++)
@@ -131,11 +131,11 @@ ent_creat2(U8 *e, U16 m)
  * lrow: last visible row of the map -- absolute map coordinate
  */
 void
-ent_actvis(U8 frow, U8 lrow)
+ent_actvis(uint8_t frow, uint8_t lrow)
 {
-	U16 m;
-	U8 e;
-	U16 y;
+	uint16_t m;
+	uint8_t e;
+	uint16_t y;
 
 	/*
 	* go through the list and find the first mark that
@@ -242,9 +242,9 @@ ent_actvis(U8 frow, U8 lrow)
     ent_ents[e].w = ent_entdata[map_marks[m].ent].w;
     ent_ents[e].h = ent_entdata[map_marks[m].ent].h;
     ent_ents[e].sprbase = ent_entdata[map_marks[m].ent].spr;
-    ent_ents[e].sprite = (U8)ent_entdata[map_marks[m].ent].spr;
+    ent_ents[e].sprite = (uint8_t)ent_entdata[map_marks[m].ent].spr;
     ent_ents[e].step_no_i = ent_entdata[map_marks[m].ent].sni;
-    ent_ents[e].trigsnd = (U8)ent_entdata[map_marks[m].ent].snd;
+    ent_ents[e].trigsnd = (uint8_t)ent_entdata[map_marks[m].ent].snd;
 
     /*
      * FIXME what is this? when all trigger flags are up, then
@@ -260,7 +260,7 @@ ent_actvis(U8 frow, U8 lrow)
 (ENT_FLG_TRIGBOMB|ENT_FLG_TRIGBULLET|ENT_FLG_TRIGSTOP|ENT_FLG_TRIGRICK)
     if ((ent_ents[e].flags & ENT_FLG_TRIGGERS) == ENT_FLG_TRIGGERS
 	&& e >= 0x09)
-      ent_ents[e].sprbase = (U8)(ent_entdata[map_marks[m].ent].sni & 0x00ff);
+      ent_ents[e].sprbase = (uint8_t)(ent_entdata[map_marks[m].ent].sni & 0x00ff);
 #undef ENT_FLG_TRIGGERS
 
     ent_ents[e].trig_x = map_marks[m].lt & 0xf8;
@@ -285,10 +285,10 @@ ent_actvis(U8 frow, U8 lrow)
  * so it fits into the display zone.
  */
 static void
-ent_addrect(S16 x, S16 y, U16 width, U16 height)
+ent_addrect(int16_t x, int16_t y, uint16_t width, uint16_t height)
 {
-  S16 x0, y0;
-  U16 w0, h0;
+  int16_t x0, y0;
+  uint16_t w0, h0;
 
   /*sys_printf("rect %#04x,%#04x %#04x %#04x ", x, y, width, height);*/
 
@@ -332,11 +332,11 @@ ent_addrect(S16 x, S16 y, U16 width, U16 height)
 void
 ent_draw(void)
 {
-  U8 i;
+  uint8_t i;
 #ifdef ENABLE_CHEATS
-  static U8 ch3 = false;
+  static uint8_t ch3 = false;
 #endif
-  S16 dx, dy;
+  int16_t dx, dy;
 
   draw_tilesBank = map_tilesBank;
 
@@ -447,7 +447,7 @@ ent_draw(void)
 void
 ent_clprev(void)
 {
-  U8 i;
+  uint8_t i;
 
   for (i = 0; ent_ents[i].n != 0xff; i++)
     ent_ents[i].prev_n = 0;
@@ -456,7 +456,7 @@ ent_clprev(void)
 /*
  * Table containing entity action function pointers.
  */
-void (*ent_actf[])(U8) = {
+void (*ent_actf[])(uint8_t) = {
   NULL,        /* 00 - zero means that the slot is free */
   e_rick_action,   /* 01 - 12CA */
   e_bullet_action,  /* 02 - 1883 */
@@ -491,7 +491,7 @@ void (*ent_actf[])(U8) = {
 void
 ent_action(void)
 {
-  U8 i, k;
+  uint8_t i, k;
 
   IFDEBUG_ENTS(
     sys_printf("xrick/ents: --------- action ----------------\n");

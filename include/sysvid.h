@@ -16,7 +16,7 @@
 
 #include "system.h"
 
-extern U8 *sysvid_fb;  /* frame buffer */
+extern uint8_t *sysvid_fb;  /* frame buffer */
 
 #endif
 

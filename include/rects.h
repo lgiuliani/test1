@@ -17,13 +17,13 @@
 #include "system.h"
 
 typedef struct rect_s {
-  U16 x, y;
-  U16 width, height;
+  uint16_t x, y;
+  uint16_t width, height;
   struct rect_s *next;
 } rect_t;
 
 extern void rects_free(rect_t *);
-extern rect_t *rects_new(U16, U16, U16, U16, rect_t *);
+extern rect_t *rects_new(uint16_t, uint16_t, uint16_t, uint16_t, rect_t *);
 
 #endif
 

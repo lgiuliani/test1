@@ -41,16 +41,16 @@
 /*
  * global vars
  */
-U8 map_map[0x2C][0x20];
-U8 map_eflg[0x100];
-U8 map_frow;
-U8 map_tilesBank;
+uint8_t map_map[0x2C][0x20];
+uint8_t map_eflg[0x100];
+uint8_t map_frow;
+uint8_t map_tilesBank;
 
 
 /*
  * prototypes
  */
-static void map_eflg_expand(U8);
+static void map_eflg_expand(uint8_t);
 
 
 /*
@@ -64,9 +64,9 @@ static void map_eflg_expand(U8);
 void
 map_expand(void)
 {
-  U8 i, j, k, l;
-  U8 row, col;
-  U16 pbnum;
+  uint8_t i, j, k, l;
+  uint8_t row, col;
+  uint16_t pbnum;
 
   pbnum = map_submaps[game_submap].bnum + ((2 * map_frow) & 0xfff8);
   row = col = 0;
@@ -119,9 +119,9 @@ map_init(void)
  * ASM 1117
  */
 void
-map_eflg_expand(U8 offs)
+map_eflg_expand(uint8_t offs)
 {
-  U8 i, j, k;
+  uint8_t i, j, k;
 
   for (i = 0, k = 0; i < 0x10; i++) {
     j = map_eflg_c[offs + i++];
@@ -136,10 +136,10 @@ map_eflg_expand(U8 offs)
  * ASM 0c08
  * return: true/next submap OK, false/map finished
  */
-U8
+uint8_t
 map_chain(void)
 {
-  U16 c, t;
+  uint16_t c, t;
 
   game_chsm = false;
   e_sbonus_counting = false;
@@ -203,7 +203,7 @@ map_chain(void)
 void
 map_resetMarks(void)
 {
-  U16 i;
+  uint16_t i;
   for (i = 0; i < MAP_NBR_MARKS; i++)
     map_marks[i].ent &= ~MAP_MARK_NACT;
 }

@@ -22,13 +22,13 @@
  * public vars (for performance reasons)
  */
 bool e_bomb_lethal;
-U8 e_bomb_xc;
-U16 e_bomb_yc;
+uint8_t e_bomb_xc;
+uint16_t e_bomb_yc;
 
 /*
  * private vars
  */
-U8 e_bomb_ticker;
+uint8_t e_bomb_ticker;
 
 /*
  * Bomb hit test
@@ -36,7 +36,7 @@ U8 e_bomb_ticker;
  * ASM 11CD
  * returns: true/hit, false/not
  */
-U8 e_bomb_hit(U8 e)
+uint8_t e_bomb_hit(uint8_t e)
 {
 	if (ent_ents[e].x > (E_BOMB_ENT.x >= 0xE0 ? 0xFF : E_BOMB_ENT.x + 0x20))
 			return false;
@@ -52,7 +52,7 @@ U8 e_bomb_hit(U8 e)
 /*
  * Initialize bomb
  */
-void e_bomb_init(U16 x, U16 y)
+void e_bomb_init(uint16_t x, uint16_t y)
 {
     E_BOMB_ENT.n = 0x03;
     E_BOMB_ENT.x = x;
@@ -78,7 +78,7 @@ void e_bomb_init(U16 x, U16 y)
  * ASM 18CA
  */
 void
-e_bomb_action(UNUSED(U8 e))
+e_bomb_action(UNUSED(uint8_t e))
 {
 	/* tick */
 	e_bomb_ticker--;

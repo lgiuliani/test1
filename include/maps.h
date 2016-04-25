@@ -36,15 +36,15 @@
 #define MAP_ROW_HBTOP 0x20
 #define MAP_ROW_HBBOT 0x27
 
-extern U8 map_map[0x2c][0x20];
+extern uint8_t map_map[0x2c][0x20];
 
 /*
  * main maps
  */
 typedef struct {
-  U16 x, y;		/* initial position for rick */
-  U16 row;		/* initial map_map top row within the submap */
-  U16 submap;	/* initial submap */
+  uint16_t x, y;		/* initial position for rick */
+  uint16_t row;		/* initial map_map top row within the submap */
+  uint16_t submap;	/* initial submap */
   char *tune;	/* map tune */
 } map_t;
 
@@ -54,10 +54,10 @@ extern map_t map_maps[MAP_NBR_MAPS];
  * sub maps
  */
 typedef struct {
-  U16 page;            /* tiles page */
-  U16 bnum;            /* first block number */
-  U16 connect;         /* first connection */
-  U16 mark;            /* first entity mark */
+  uint16_t page;            /* tiles page */
+  uint16_t bnum;            /* first block number */
+  uint16_t connect;         /* first connection */
+  uint16_t mark;            /* first entity mark */
 } submap_t;
 
 extern submap_t map_submaps[MAP_NBR_SUBMAPS];
@@ -66,10 +66,10 @@ extern submap_t map_submaps[MAP_NBR_SUBMAPS];
  * connections
  */
 typedef struct {
-  U8 dir;
-  U8 rowout;
-  U8 submap;
-  U8 rowin;
+  uint8_t dir;
+  uint8_t rowout;
+  uint8_t submap;
+  uint8_t rowin;
 } connect_t;
 
 extern connect_t map_connect[MAP_NBR_CONNECT];
@@ -77,7 +77,7 @@ extern connect_t map_connect[MAP_NBR_CONNECT];
 /*
  * blocks - one block is 4 by 4 tiles.
  */
-typedef U8 block_t[0x10];
+typedef uint8_t block_t[0x10];
 
 extern block_t map_blocks[MAP_NBR_BLOCKS];
 
@@ -92,11 +92,11 @@ extern block_t map_blocks[MAP_NBR_BLOCKS];
  * mark structure
  */
 typedef struct {
-  U8 row;
-  U8 ent;
-  U8 flags;
-  U8 xy;  /* bits XXXX XYYY (from b03) with X->x, Y->y */
-  U8 lt;  /* bits XXXX XNNN (from b04) with X->trig_x, NNN->lat & trig_y */
+  uint8_t row;
+  uint8_t ent;
+  uint8_t flags;
+  uint8_t xy;  /* bits XXXX XYYY (from b03) with X->x, Y->y */
+  uint8_t lt;  /* bits XXXX XNNN (from b04) with X->trig_x, NNN->lat & trig_y */
 } mark_t;
 
 extern mark_t map_marks[MAP_NBR_MARKS];
@@ -104,7 +104,7 @@ extern mark_t map_marks[MAP_NBR_MARKS];
 /*
  * block numbers, i.e. array of rows of 8 blocks
  */
-extern U8 map_bnums[MAP_NBR_BNUMS];
+extern uint8_t map_bnums[MAP_NBR_BNUMS];
 
 /*
  * flags for map_eflg[map_map[row][col]]  ("yes" when set)
@@ -127,22 +127,22 @@ extern U8 map_bnums[MAP_NBR_BNUMS];
 #define MAP_EFLG_CLIMB (0x02)
 #define MAP_EFLG_01 (0x01)
 
-extern U8 map_eflg_c[MAP_NBR_EFLGC];  /* compressed */
-extern U8 map_eflg[0x100];  /* current */
+extern uint8_t map_eflg_c[MAP_NBR_EFLGC];  /* compressed */
+extern uint8_t map_eflg[0x100];  /* current */
 
 /*
  * map_map top row within the submap
  */
-extern U8 map_frow;
+extern uint8_t map_frow;
 
 /*
  * tiles offset
  */
-extern U8 map_tilesBank;
+extern uint8_t map_tilesBank;
 
 extern void map_expand(void);
 extern void map_init(void);
-extern U8 map_chain(void);
+extern uint8_t map_chain(void);
 extern void map_resetMarks(void);
 
 #endif

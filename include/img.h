@@ -17,14 +17,14 @@
 #include "system.h"
 
 typedef struct {
-  U8 r, g, b, nothing;
+  uint8_t r, g, b, nothing;
 } img_color_t;
 
 typedef struct {
-  U16 w, h;
-  U16 ncolors;
+  uint16_t w, h;
+  uint16_t ncolors;
   img_color_t *colors;
-  U8 *pixels;
+  uint8_t *pixels;
 } img_t;
 
 img_t *IMG_SPLASH;

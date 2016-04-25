@@ -21,14 +21,14 @@
 /*
  * public vars (for performance reasons)
  */
-S8 e_bullet_offsx;
-S16 e_bullet_xc, e_bullet_yc;
+int8_t e_bullet_offsx;
+int16_t e_bullet_xc, e_bullet_yc;
 
 /*
  * Initialize bullet
  */
 void
-e_bullet_init(U16 x, U16 y)
+e_bullet_init(uint16_t x, uint16_t y)
 {
   E_BULLET_ENT.n = 0x02;
   E_BULLET_ENT.x = x;
@@ -53,7 +53,7 @@ e_bullet_init(U16 x, U16 y)
  * ASM 1883, 0F97
  */
 void
-e_bullet_action(UNUSED(U8 e))
+e_bullet_action(UNUSED(uint8_t e))
 {
   /* move bullet */
   E_BULLET_ENT.x += e_bullet_offsx;

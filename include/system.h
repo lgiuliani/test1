@@ -16,6 +16,7 @@
 
 #include "config.h"
 #include <stdbool.h> /* bool */
+#include <stdint.h>
 
 /*
  * If compiling w/gcc, then we can use attributes. UNUSED(x) flags a
@@ -52,14 +53,6 @@
 #define __WIN32__
 #endif
 
-/* there are true at least on x86 platforms */
-typedef unsigned char U8;         /*  8 bits unsigned */
-typedef unsigned short int U16;   /* 16 bits unsigned */
-typedef unsigned int U32;         /* 32 bits unsigned */
-typedef signed char S8;           /*  8 bits signed   */
-typedef signed short int S16;     /* 16 bits signed   */
-typedef signed int S32;           /* 32 bits signed   */
-
 /* this must be after typedefs because it relies on types defined above */
 #include "rects.h"
 #include "img.h"
@@ -71,7 +64,7 @@ extern void sys_init(int, char **);
 extern void sys_shutdown(void);
 extern void sys_panic(char *, ...);
 extern void sys_printf(char *, ...);
-extern U32 sys_gettime(void);
+extern uint32_t sys_gettime(void);
 extern void sys_sleep(int);
 
 /*
@@ -86,10 +79,10 @@ extern void sysvid_init(void);
 extern void sysvid_shutdown(void);
 extern void sysvid_update(rect_t *);
 extern void sysvid_clear(void);
-extern void sysvid_zoom(S8);
+extern void sysvid_zoom(int8_t);
 extern void sysvid_toggleFullscreen(void);
 extern void sysvid_setGamePalette(void);
-extern void sysvid_setPalette(img_color_t *, U16);
+extern void sysvid_setPalette(img_color_t *, uint16_t);
 
 /*
  * events section
@@ -100,14 +93,14 @@ extern void sysevt_wait(void);
 /*
  * keyboard section
  */
-extern U8 syskbd_up;
-extern U8 syskbd_down;
-extern U8 syskbd_left;
-extern U8 syskbd_right;
-extern U8 syskbd_pause;
-extern U8 syskbd_end;
-extern U8 syskbd_xtra;
-extern U8 syskbd_fire;
+extern uint8_t syskbd_up;
+extern uint8_t syskbd_down;
+extern uint8_t syskbd_left;
+extern uint8_t syskbd_right;
+extern uint8_t syskbd_pause;
+extern uint8_t syskbd_end;
+extern uint8_t syskbd_xtra;
+extern uint8_t syskbd_fire;
 
 /*
  * sound section
@@ -117,18 +110,18 @@ typedef struct {
 #ifdef DEBUG
   char *name;
 #endif
-  U8 *buf;
-  U32 len;
-  U8 dispose;
+  uint8_t *buf;
+  uint32_t len;
+  uint8_t dispose;
 } sound_t;
 
 extern void syssnd_init(void);
 extern void syssnd_shutdown(void);
-extern void syssnd_vol(S8);
+extern void syssnd_vol(int8_t);
 extern void syssnd_toggleMute(void);
-extern void syssnd_play(sound_t *, S8);
-extern void syssnd_pause(U8, U8);
-extern void syssnd_stopchan(S8);
+extern void syssnd_play(sound_t *, int8_t);
+extern void syssnd_pause(uint8_t, uint8_t);
+extern void syssnd_stopchan(int8_t);
 extern void syssnd_stopsound(sound_t *);
 extern void syssnd_stopall();
 extern int syssnd_isplaying(sound_t *);

@@ -26,15 +26,15 @@
  *
  * return: SCREEN_RUNNING, SCREEN_DONE, SCREEN_EXIT
  */
-U8
+uint8_t
 screen_introMain(void)
 {
-  static U8 seq = 0;
-  static U8 seen = 0;
-  static U8 first = true;
-  static U8 period = 0;
-  static U32 tm = 0;
-	U8 i, s[32];
+  static uint8_t seq = 0;
+  static uint8_t seen = 0;
+  static uint8_t first = true;
+  static uint8_t period = 0;
+  static uint32_t tm = 0;
+	uint8_t i, s[32];
 
   if (seq == 0) {
     draw_tilesBank = 0;
@@ -57,13 +57,13 @@ screen_introMain(void)
 
 #ifdef GFXPC
     /* Rick Dangerous title */
-    draw_tllst = (U8 *)screen_imainrdt;
+    draw_tllst = (uint8_t *)screen_imainrdt;
     draw_setfb(32, 16);
     draw_filter = 0xaaaa;
     draw_tilesList();
 
     /* Core Design copyright + press space to start */
-    draw_tllst = (U8 *)screen_imaincdc;
+    draw_tllst = (uint8_t *)screen_imaincdc;
     draw_setfb(64, 80);
     draw_filter = 0x5555;
     draw_tilesList();
@@ -100,7 +100,7 @@ screen_introMain(void)
 
     /* hall of fame title */
 #ifdef GFXPC
-    draw_tllst = (U8 *)screen_imainhoft;
+    draw_tllst = (uint8_t *)screen_imainhoft;
     draw_setfb(32, 0);
     draw_filter = 0xaaaa;
     draw_tilesList();

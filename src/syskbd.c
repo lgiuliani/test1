@@ -15,14 +15,14 @@
 
 #include "system.h"
 
-U8 syskbd_up = SDLK_o;
-U8 syskbd_down = SDLK_k;
-U8 syskbd_left = SDLK_z;
-U8 syskbd_right = SDLK_x;
-U8 syskbd_pause = SDLK_p;
-U8 syskbd_end = SDLK_e;
-U8 syskbd_xtra = SDLK_ESCAPE;
-U8 syskbd_fire = SDLK_SPACE;
+uint8_t syskbd_up = SDLK_o;
+uint8_t syskbd_down = SDLK_k;
+uint8_t syskbd_left = SDLK_z;
+uint8_t syskbd_right = SDLK_x;
+uint8_t syskbd_pause = SDLK_p;
+uint8_t syskbd_end = SDLK_e;
+uint8_t syskbd_xtra = SDLK_ESCAPE;
+uint8_t syskbd_fire = SDLK_SPACE;
 
 /* eof */
 

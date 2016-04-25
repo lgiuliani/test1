@@ -16,7 +16,7 @@
 
 #include "system.h"
 
-extern U8 devtools_run(void);
+extern uint8_t devtools_run(void);
 
 #endif
 

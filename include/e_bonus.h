@@ -16,7 +16,7 @@
 
 #include "system.h"
 
-extern void e_bonus_action(U8);
+extern void e_bonus_action(uint8_t);
 
 #endif
 

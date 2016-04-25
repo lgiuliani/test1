@@ -28,14 +28,14 @@
  * DevTools
  */
 
-U8
+uint8_t
 devtools_run(void)
 {
-  static U8 seq = 0;
-  static U8 pos = 0;
-  static U8 pos2 = 0;
-  U8 i, j, k, l;
-  U8 s[128];
+  static uint8_t seq = 0;
+  static uint8_t pos = 0;
+  static uint8_t pos2 = 0;
+  uint8_t i, j, k, l;
+  uint8_t s[128];
 
   if (seq == 0) {
     sysvid_clear();

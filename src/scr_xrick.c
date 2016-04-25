@@ -26,11 +26,11 @@
  *
  * return: SCREEN_RUNNING, SCREEN_DONE, SCREEN_EXIT
  */
-U8
+uint8_t
 screen_xrick(void)
 {
-	static U8 seq = 0;
-	static U8 wait = 0;
+	static uint8_t seq = 0;
+	static uint8_t wait = 0;
 
 	if (seq == 0) {
 		sysvid_clear();

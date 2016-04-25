@@ -26,7 +26,7 @@
  * ASM 242C
  */
 void
-e_bonus_action(U8 e)
+e_bonus_action(uint8_t e)
 {
 #define seq c1
 

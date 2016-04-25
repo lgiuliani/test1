@@ -22,17 +22,17 @@
 #include "maps.h"
 #include "ents.h"
 
-static U8 period;
+static uint8_t period;
 
 /*
  * Scroll up
  *
  */
-U8
+uint8_t
 scroll_up(void)
 {
-  U8 i, j;
-  static U8 n = 0;
+  uint8_t i, j;
+  static uint8_t n = 0;
 
   /* last call: restore */
   if (n == 8) {
@@ -96,11 +96,11 @@ scroll_up(void)
  * Scroll down
  *
  */
-U8
+uint8_t
 scroll_down(void)
 {
-  U8 i, j;
-  static U8 n = 0;
+  uint8_t i, j;
+  static uint8_t n = 0;
 
   /* last call: restore */
   if (n == 8) {

@@ -25,15 +25,15 @@
 /*
  * local vars
  */
-static U16 step;              /* current step */
-static U16 count;             /* number of loops for current step */
-static U16 run;               /* 1 = run, 0 = no more step */
-static U8 flipflop;           /* flipflop for top, bottom, left, right */
-static U16 spnum;             /* sprite number */
-static U16 spx, spdx;         /* sprite x position and delta */
-static U16 spy, spdy;         /* sprite y position and delta */
-static U16 spbase, spoffs;    /* base, offset for sprite numbers table */
-static U8 seq = 0;            /* anim sequence */
+static uint16_t step;              /* current step */
+static uint16_t count;             /* number of loops for current step */
+static uint16_t run;               /* 1 = run, 0 = no more step */
+static uint8_t flipflop;           /* flipflop for top, bottom, left, right */
+static uint16_t spnum;             /* sprite number */
+static uint16_t spx, spdx;         /* sprite x position and delta */
+static uint16_t spy, spdy;         /* sprite y position and delta */
+static uint16_t spbase, spoffs;    /* base, offset for sprite numbers table */
+static uint8_t seq = 0;            /* anim sequence */
 
 static rect_t anim_rect = { 120, 16, 64, 64, NULL }; /* anim rectangle */
 
@@ -55,7 +55,7 @@ static void init(void);
  *
  * return: SCREEN_RUNNING, SCREEN_DONE, SCREEN_EXIT
  */
-U8
+uint8_t
 screen_introMap(void)
 {
   switch (seq) {
@@ -151,7 +151,7 @@ screen_introMap(void)
 static void
 drawtb(void)
 {
-  U8 i;
+  uint8_t i;
 
   flipflop++;
   if (flipflop & 0x01) {
@@ -180,7 +180,7 @@ drawtb(void)
 static void
 drawlr(void)
 {
-  U8 i;
+  uint8_t i;
 
   if (flipflop & 0x02) {
     for (i = 0; i < 8; i++) {
@@ -219,8 +219,8 @@ drawsprite(void)
 static void
 drawcenter(void)
 {
-  static U8 tn0[] = { 0x07, 0x5B, 0x7F, 0xA3, 0xC7 };
-  U8 i, j, tn;
+  static uint8_t tn0[] = { 0x07, 0x5B, 0x7F, 0xA3, 0xC7 };
+  uint8_t i, j, tn;
 
   tn = tn0[game_map];
   for (i = 0; i < 6; i++) {
@@ -259,7 +259,7 @@ nextstep(void)
 static void
 anim(void)
 {
-  U16 i;
+  uint16_t i;
 
   if (run) {
     i = screen_imapsl[spbase + spoffs];

@@ -19,11 +19,11 @@
 #define E_BULLET_NO 2
 #define E_BULLET_ENT ent_ents[E_BULLET_NO]
 
-extern S8 e_bullet_offsx;
-extern S16 e_bullet_xc, e_bullet_yc;
+extern int8_t e_bullet_offsx;
+extern int16_t e_bullet_xc, e_bullet_yc;
 
-extern void e_bullet_init(U16, U16);
-extern void e_bullet_action(U8);
+extern void e_bullet_init(uint16_t, uint16_t);
+extern void e_bullet_action(uint8_t);
 
 #endif
 

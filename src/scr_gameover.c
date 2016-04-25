@@ -25,13 +25,13 @@
  *
  * return: SCREEN_RUNNING, SCREEN_DONE, SCREEN_EXIT
  */
-U8
+uint8_t
 screen_gameover(void)
 {
-	static U8 seq = 0;
-	static U8 period = 0;
+	static uint8_t seq = 0;
+	static uint8_t period = 0;
 #ifdef GFXST
-	static U32 tm = 0;
+	static uint32_t tm = 0;
 #endif
 
 	if (seq == 0) {

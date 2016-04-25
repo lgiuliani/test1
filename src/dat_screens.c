@@ -17,7 +17,7 @@
 /*
  * map intro, sprites lists
  */
-U8 screen_imapsl[] = {
+uint8_t screen_imapsl[] = {
   0x1b, 0x00,
   0x1c, 0x1d, 0x00,
   0x01, 0x00,
@@ -70,7 +70,7 @@ screen_imapsteps_t screen_imapsteps[] = {
 /*
  * map intro, step offset per map
  */
-U8 screen_imapsofs[] = {
+uint8_t screen_imapsofs[] = {
   0x00, 0x03, 0x07, 0x0a, 0x0f
 };
 
@@ -80,7 +80,7 @@ U8 screen_imapsofs[] = {
  *
  * \376=0xfe \377=0xff
  */
-U8 screen_imaptext_amazon[] = "\
+uint8_t screen_imaptext_amazon[] = "\
 @@@@@SOUTH@AMERICA@1945@@@@@@@\377\
 RICK@DANGEROUS@CRASH@LANDS@HIS\377\
 @PLANE@OVER@THE@AMAZON@WHILE@@\377\
@@ -92,7 +92,7 @@ FATE@HE@LANDS@IN@THE@MIDDLE@OF\377\
 @@CAN@RICK@ESCAPE@THESE@ANGRY@\377\
 @@@AMAZONIAN@ANTAGONISTS@?@@@@\376";
 
-U8 screen_imaptext_egypt[] = "\
+uint8_t screen_imaptext_egypt[] = "\
 @@@@EGYPT,@SOMETIMES@LATER@@@@\377\
 RICK@HEADS@FOR@THE@PYRAMIDS@AT\377\
 @@@@THE@REQUEST@OF@LONDON.@@@@\377\377\
@@ -103,7 +103,7 @@ FANATICS@WHO@THREATEN@TO@SMASH\377\
 CAN@RICK@SAVE@THE@GEM,@OR@WILL\377\
 HE@JUST@GET@A@BROKEN@ANKHEL@?@\376";
 
-U8 screen_imaptext_castle[] = "\
+uint8_t screen_imaptext_castle[] = "\
 @@@@EUROPE,@LATER@THAT@WEEK@@@\377\
 @@RICK@RECEIVES@A@COMMUNIQUE@@\377\
 @@FROM@BRITISH@INTELLIGENCE@@@\377\
@@ -114,7 +114,7 @@ U8 screen_imaptext_castle[] = "\
 @@@BUT@CAN@HE@LIBERATE@THE@@@@\377\
 @CRUELLY@CAPTURED@COOMANDOS@?@\376";
 
-U8 screen_imaptext_missile[] = "\
+uint8_t screen_imaptext_missile[] = "\
 @@@@@@EUROPE,@EVEN@LATER@@@@@@\377\
 RICK@LEARNS@FROM@THE@PRISONERS\377\
 @THAT@THE@ENEMY@ARE@TO@LAUNCH@\377\
@@ -124,7 +124,7 @@ WITHOUT@HESITATION,@HE@DECIDES\377\
 @@@TO@INFILTRATE@THE@BASE.@@@@\377\377\
 CAN@RICK@SAVE@LONDON@IN@TIME@?\376";
 
-U8 screen_imaptext_muchlater[] = "\
+uint8_t screen_imaptext_muchlater[] = "\
 @@@LONDON,@MUCH,@MUCH@LATER@@@\377\
 @RICK@RETURNS@TO@A@TRIUMPHANT@\377\
 @@WELCOME@HOME@HAVING@HELPED@@\377\
@@ -135,7 +135,7 @@ BUT,@MEANWHILE,@IN@SPACE,@THE@\377\
 @@@@@TO@INVADE@THE@EARTH.@@@@@\377\377\
 @WHAT@WILL@RICK@DO@NEXT@...@?@\376";
 
-U8 *screen_imaptext[5] =
+uint8_t *screen_imaptext[5] =
 { screen_imaptext_amazon,
   screen_imaptext_egypt,
   screen_imaptext_castle,
@@ -147,7 +147,7 @@ U8 *screen_imaptext[5] =
  * main intro, hall of fame title
  * (from ds + 0x8810 + 0x2642)
  */
-U8 screen_imainhoft[] =
+uint8_t screen_imainhoft[] =
 { 0x2f, 0x2f, 0x2f, 0x2f, 0x2f, 0xd4, 0xb7, 0xb1,
   0xac, 0xc6, 0x2f, 0xc6, 0x2f, 0x2f, 0xa4, 0xac,
   0x9b, 0xc1, 0x2f, 0x9b, 0xc1, 0xb1, 0xac, 0xb6,
@@ -169,7 +169,7 @@ U8 screen_imainhoft[] =
  * main intro, Rick Dangerous title
  * (from ds + 0x8810 + 0x27a1)
  */
-U8 screen_imainrdt[] =
+uint8_t screen_imainrdt[] =
 { 0x2f, 0x2f, 0x2f, 0x9b, 0x9c, 0xa1, 0xa4, 0xa5,
   0xa9, 0xaa, 0x2f, 0x9b, 0xac, 0xb1, 0xac, 0xb6,
   0xb7, 0xa4, 0xa5, 0x9b, 0xc1, 0x9b, 0x9c, 0xa4,
@@ -191,7 +191,7 @@ U8 screen_imainrdt[] =
  * congratulations
  * (from ds + 0x8810 + 0x257d)
  */
-U8 screen_congrats[] =
+uint8_t screen_congrats[] =
 { 0xa4, 0xa5, 0xa4, 0xac, 0xb6, 0xb7, 0xa4, 0xa5,
   0x9b, 0x9c, 0xb1, 0xac, 0xcd, 0xce, 0xc6, 0xc7,
   0xd3, 0x2f, 0xb1, 0xac, 0xcd, 0xce, 0xa1, 0xa4,
@@ -215,7 +215,7 @@ U8 screen_congrats[] =
  *
  * \376=0xfe \377=0xff
  */
-U8 screen_imaincdc[] = "\
+uint8_t screen_imaincdc[] = "\
 @@@@@@@@@@@@@@@@@@@\377\377\
 (C)@1989@CORE@DESIGN\377\377\377\
 @PRESS@SPACE@TO@START\376";
@@ -226,7 +226,7 @@ U8 screen_imaincdc[] = "\
  *
  * \376=0xfe \377=0xff
  */
-U8 screen_gameovertxt[] = "\
+uint8_t screen_gameovertxt[] = "\
 @@@@@@@@@@@\377\
 @GAME@OVER@\377\
 @@@@@@@@@@@\376";
@@ -236,7 +236,7 @@ U8 screen_gameovertxt[] = "\
  *
  * \376=0xfe \377=0xff
  */
-U8 screen_pausedtxt[] = "\
+uint8_t screen_pausedtxt[] = "\
 @@@@@@@@@@\377\
 @@PAUSED@@\377\
 @@@@@@@@@@\376";

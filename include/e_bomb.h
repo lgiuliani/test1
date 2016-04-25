@@ -21,13 +21,13 @@
 #define E_BOMB_TICKER (0x2D)
 
 extern bool e_bomb_lethal;
-extern U8 e_bomb_ticker;
-extern U8 e_bomb_xc;
-extern U16 e_bomb_yc;
+extern uint8_t e_bomb_ticker;
+extern uint8_t e_bomb_xc;
+extern uint16_t e_bomb_yc;
 
-extern U8 e_bomb_hit(U8);
-extern void e_bomb_init(U16, U16);
-extern void e_bomb_action(U8);
+extern uint8_t e_bomb_hit(uint8_t);
+extern void e_bomb_init(uint16_t, uint16_t);
+extern void e_bomb_action(uint8_t);
 
 #endif
 

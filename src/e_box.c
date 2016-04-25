@@ -37,7 +37,7 @@
 /*
  * Prototypes
  */
-static void explode(U8);
+static void explode(uint8_t);
 
 /*
  * Entity action
@@ -45,9 +45,9 @@ static void explode(U8);
  * ASM 245A
  */
 void
-e_box_action(U8 e)
+e_box_action(uint8_t e)
 {
-	static U8 sp[] = {0x24, 0x25, 0x26, 0x27, 0x28};  /* explosion sprites sequence */
+	static uint8_t sp[] = {0x24, 0x25, 0x26, 0x27, 0x28};  /* explosion sprites sequence */
 
 	if (ent_ents[e].n & ENT_LETHAL) {
 		/*
@@ -96,7 +96,7 @@ e_box_action(U8 e)
 /*
  * Explode when
  */
-static void explode(U8 e)
+static void explode(uint8_t e)
 {
 	ent_ents[e].cnt = SEQ_INIT;
 	ent_ents[e].n |= ENT_LETHAL;

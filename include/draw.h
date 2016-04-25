@@ -26,27 +26,27 @@
 /* map coordinates of the top of the hidden bottom of the map */
 #define DRAW_XYMAP_HBTOP (0x0100)
 
-extern U8 *draw_tllst;
+extern uint8_t *draw_tllst;
 #ifdef GFXPC
-extern U16 draw_filter;
+extern uint16_t draw_filter;
 #endif
-extern U8 draw_tilesBank;
+extern uint8_t draw_tilesBank;
 extern rect_t draw_STATUSRECT;
 extern rect_t draw_SCREENRECT;
 
-extern void draw_setfb(U16, U16);
-extern bool draw_clipms(S16 *, S16 *, U16 *, U16 *);
+extern void draw_setfb(uint16_t, uint16_t);
+extern bool draw_clipms(int16_t *, int16_t *, uint16_t *, uint16_t *);
 extern void draw_tilesList(void);
-extern void draw_tilesListImm(U8 *);
-extern U8 draw_tilesSubList(void);
-extern void draw_tile(register U8);
-extern void draw_sprite(U8, U16, U16);
-extern void draw_sprite2(U8, U16, U16, U8);
-extern void draw_spriteBackground(U16, U16);
+extern void draw_tilesListImm(uint8_t *);
+extern uint8_t draw_tilesSubList(void);
+extern void draw_tile(register uint8_t);
+extern void draw_sprite(uint8_t, uint16_t, uint16_t);
+extern void draw_sprite2(uint8_t, uint16_t, uint16_t, uint8_t);
+extern void draw_spriteBackground(uint16_t, uint16_t);
 extern void draw_map(void);
 extern void draw_drawStatus(void);
 extern void draw_clearStatus(void);
-extern void draw_pic(U16, U16, U16, U16, U32 *);
+extern void draw_pic(uint16_t, uint16_t, uint16_t, uint16_t, uint32_t *);
 extern void draw_infos(void);
 extern void draw_img(img_t *);
 

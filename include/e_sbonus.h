@@ -16,12 +16,12 @@
 
 #include "system.h"
 
-extern U8 e_sbonus_counting;
-extern U8 e_sbonus_counter;
-extern U16 e_sbonus_bonus;
+extern uint8_t e_sbonus_counting;
+extern uint8_t e_sbonus_counter;
+extern uint16_t e_sbonus_bonus;
 
-extern void e_sbonus_start(U8);
-extern void e_sbonus_stop(U8);
+extern void e_sbonus_start(uint8_t);
+extern void e_sbonus_stop(uint8_t);
 
 #endif
 

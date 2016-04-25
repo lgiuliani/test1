@@ -74,11 +74,11 @@
 /*
  * public vars
  */
-U8 *draw_tllst;    /* pointer to tiles list */
+uint8_t *draw_tllst;    /* pointer to tiles list */
 #ifdef GFXPC
-U16 draw_filter;   /* CGA colors filter */
+uint16_t draw_filter;   /* CGA colors filter */
 #endif
-U8 draw_tilesBank; /* tile number offset */
+uint8_t draw_tilesBank; /* tile number offset */
 rect_t draw_STATUSRECT = {
   DRAW_STATUS_SCORE_X, DRAW_STATUS_Y,
   DRAW_STATUS_LIVES_X + 6 * 8 - DRAW_STATUS_SCORE_X, 8,
@@ -90,7 +90,7 @@ rect_t draw_SCREENRECT = { 0, 0, SYSVID_WIDTH, SYSVID_HEIGHT, NULL };
 /*
  * private vars
  */
-static U8 *fb;     /* frame buffer pointer */
+static uint8_t *fb;     /* frame buffer pointer */
 
 
 /*
@@ -99,7 +99,7 @@ static U8 *fb;     /* frame buffer pointer */
  * x, y: position (pixels, screen)
  */
 void
-draw_setfb(U16 x, U16 y)
+draw_setfb(uint16_t x, uint16_t y)
 {
   fb = sysvid_fb + x + y * SYSVID_WIDTH;
 }
@@ -113,7 +113,7 @@ draw_setfb(U16 x, U16 y)
  * return: true if fully clipped, false if still (at least partly) visible
  */
 bool
-draw_clipms(S16 *x, S16 *y, U16 *width, U16 *height)
+draw_clipms(int16_t *x, int16_t *y, uint16_t *width, uint16_t *height)
 {
   if (*x < 0) {
     if (*x + *width < 0)
@@ -163,7 +163,7 @@ draw_clipms(S16 *x, S16 *y, U16 *width, U16 *height)
 void
 draw_tilesList(void)
 {
-  U8 *t;
+  uint8_t *t;
 
   t = fb;
   while (draw_tilesSubList() != 0xFE) {  /* draw sub-list */
@@ -179,7 +179,7 @@ draw_tilesList(void)
  * to be properly terminated with 0xfe (\376) and 0xff (\377) chars.
  */
 void
-draw_tilesListImm(U8 *list)
+draw_tilesListImm(uint8_t *list)
 {
   draw_tllst = list;
   draw_tilesList();
@@ -196,10 +196,10 @@ draw_tilesListImm(U8 *list)
  * draw_tllst: CHANGED points to the element following 0xfe/0xff end code
  * returns: end code (0xfe : end of list ; 0xff : end of sub-list)
  */
-U8
+uint8_t
 draw_tilesSubList()
 {
-  U8 i;
+  uint8_t i;
 
   i = *(draw_tllst++);
   while (i != 0xFF && i != 0xFE) {  /* while not end */
@@ -221,16 +221,16 @@ draw_tilesSubList()
  * fb: CHANGED (see above)
  */
 void
-draw_tile(U8 tileNumber)
+draw_tile(uint8_t tileNumber)
 {
-  U8 i, k, *f;
+  uint8_t i, k, *f;
 
 #ifdef GFXPC
-  U16 x;
+  uint16_t x;
 #endif
 
 #ifdef GFXST
-  U32 x;
+  uint32_t x;
 #endif
 
   f = fb;  /* frame buffer */
@@ -273,10 +273,10 @@ draw_tile(U8 tileNumber)
  */
 #ifdef GFXPC
 void
-draw_sprite(U8 nbr, U16 x, U16 y)
+draw_sprite(uint8_t nbr, uint16_t x, uint16_t y)
 {
-  U8 i, j, k, *f;
-  U16 xm = 0, xp = 0;
+  uint8_t i, j, k, *f;
+  uint16_t xm = 0, xp = 0;
 
   draw_setfb(x, y);
 
@@ -306,11 +306,11 @@ draw_sprite(U8 nbr, U16 x, U16 y)
  */
 #ifdef GFXST
 void
-draw_sprite(U8 number, U16 x, U16 y)
+draw_sprite(uint8_t number, uint16_t x, uint16_t y)
 {
-  U8 i, j, k, *f;
-  U16 g;
-  U32 d;
+  uint8_t i, j, k, *f;
+  uint16_t g;
+  uint32_t d;
 
   draw_setfb(x, y);
   g = 0;
@@ -335,16 +335,16 @@ draw_sprite(U8 number, U16 x, U16 y)
  */
 #ifdef GFXST
 void
-draw_sprite2(U8 number, U16 x, U16 y, U8 front)
+draw_sprite2(uint8_t number, uint16_t x, uint16_t y, uint8_t front)
 {
-  U32 d = 0;   /* sprite data */
-  S16 x0, y0;  /* clipped x, y */
-  U16 w, h;    /* width, height */
-  S16 g,       /* sprite data offset*/
+  uint32_t d = 0;   /* sprite data */
+  int16_t x0, y0;  /* clipped x, y */
+  uint16_t w, h;    /* width, height */
+  int16_t g,       /* sprite data offset*/
     r, c,      /* row, column */
     i,         /* frame buffer shifter */
     im;        /* tile flag shifter */
-  U8 flg;      /* tile flag */
+  uint8_t flg;      /* tile flag */
 
   x0 = x;
   y0 = y;
@@ -415,12 +415,12 @@ draw_sprite2(U8 number, U16 x, U16 y, U8 front)
  */
 #ifdef GFXPC
 void
-draw_sprite2(U8 number, U16 x, U16 y, U8 front)
+draw_sprite2(uint8_t number, uint16_t x, uint16_t y, uint8_t front)
 {
-  U8 k, *f, c, r, dx;
-  U16 cmax, rmax;
-  U16 xm = 0, xp = 0;
-  S16 xmap, ymap;
+  uint8_t k, *f, c, r, dx;
+  uint16_t cmax, rmax;
+  uint16_t xm = 0, xp = 0;
+  int16_t xmap, ymap;
 
   /* align to tile column, prepare map coordinate and clip */
   xmap = x & 0xFFF8;
@@ -487,12 +487,12 @@ draw_sprite2(U8 number, U16 x, U16 y, U8 front)
  * x, y: sprite position (pixels, map).
  */
 void
-draw_spriteBackground(U16 x, U16 y)
+draw_spriteBackground(uint16_t x, uint16_t y)
 {
-  U8 r, c;
-  U16 rmax, cmax;
-  S16 xmap, ymap;
-  U16 xs, ys;
+  uint8_t r, c;
+  uint16_t rmax, cmax;
+  int16_t xmap, ymap;
+  uint16_t xs, ys;
 
   /* aligne to column and row, prepare map coordinate, and clip */
   xmap = x & 0xFFF8;
@@ -533,7 +533,7 @@ draw_spriteBackground(U16 x, U16 y)
 void
 draw_map(void)
 {
-  U8 i, j;
+  uint8_t i, j;
 
   draw_tilesBank = map_tilesBank;
 
@@ -558,14 +558,14 @@ draw_map(void)
 void
 draw_drawStatus(void)
 {
-  S8 i;
-  U32 sv;
-  static U8 s[7] = {0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0xfe};
+  int8_t i;
+  uint32_t sv;
+  static uint8_t s[7] = {0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0xfe};
 
   draw_tilesBank = 0;
 
   for (i = 5, sv = game_score; i >= 0; i--) {
-    s[i] = 0x30 + (U8)(sv % 10);
+    s[i] = 0x30 + (uint8_t)(sv % 10);
     sv /= 10;
   }
   draw_tllst = s;
@@ -616,7 +616,7 @@ draw_infos(void)
 void
 draw_clearStatus(void)
 {
-  U8 i;
+  uint8_t i;
 
 #ifdef GFXPC
   draw_tilesBank = map_tilesBank;
@@ -640,11 +640,11 @@ draw_clearStatus(void)
  */
 #ifdef GFXST
 void
-draw_pic(U16 x, U16 y, U16 w, U16 h, U32 *pic)
+draw_pic(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint32_t *pic)
 {
-  U8 *f;
-  U16 i, j, k, pp;
-  U32 v;
+  uint8_t *f;
+  uint16_t i, j, k, pp;
+  uint32_t v;
 
   draw_setfb(x, y);
   pp = 0;
@@ -669,7 +669,7 @@ draw_pic(U16 x, U16 y, U16 w, U16 h, U32 *pic)
 void
 draw_img(img_t *i)
 {
-  U16 k;
+  uint16_t k;
 
   draw_setfb(0, 0);
   if (i->ncolors > 0)

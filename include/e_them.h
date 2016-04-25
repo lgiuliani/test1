@@ -16,13 +16,13 @@
 
 #include "system.h"
 
-extern U32 e_them_rndseed;
+extern uint32_t e_them_rndseed;
 
-extern void e_them_t1a_action(U8);
-extern void e_them_t1b_action(U8);
-extern void e_them_t2_action(U8);
-extern void e_them_t3_action(U8);
-extern void e_them_z_action(U8);
+extern void e_them_t1a_action(uint8_t);
+extern void e_them_t1b_action(uint8_t);
+extern void e_them_t2_action(uint8_t);
+extern void e_them_t3_action(uint8_t);
+extern void e_them_z_action(uint8_t);
 
 #endif
 

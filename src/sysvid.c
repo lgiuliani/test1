@@ -24,16 +24,16 @@
 #include <memory.h> /* memset */
 #endif
 
-U8 *sysvid_fb; /* frame buffer */
+uint8_t *sysvid_fb; /* frame buffer */
 rect_t SCREENRECT = {0, 0, SYSVID_WIDTH, SYSVID_HEIGHT, NULL}; /* whole fb */
 
 static SDL_Color palette[256];
 static SDL_Surface *screen;
-static U32 videoFlags;
+static uint32_t videoFlags;
 
-static U8 zoom = SYSVID_ZOOM; /* actual zoom level */
-static U8 szoom = 0;  /* saved zoom level */
-static U8 fszoom = 0;  /* fullscreen zoom level */
+static uint8_t zoom = SYSVID_ZOOM; /* actual zoom level */
+static uint8_t szoom = 0;  /* saved zoom level */
+static uint8_t fszoom = 0;  /* fullscreen zoom level */
 
 #include "img_icon.e"
 
@@ -42,12 +42,12 @@ static U8 fszoom = 0;  /* fullscreen zoom level */
  */
 
 #ifdef GFXPC
-static U8 RED[] = { 0x00, 0x50, 0xf0, 0xf0, 0x00, 0x50, 0xf0, 0xf0 };
-static U8 GREEN[] = { 0x00, 0xf8, 0x50, 0xf8, 0x00, 0xf8, 0x50, 0xf8 };
-static U8 BLUE[] = { 0x00, 0x50, 0x50, 0x50, 0x00, 0xf8, 0xf8, 0xf8 };
+static uint8_t RED[] = { 0x00, 0x50, 0xf0, 0xf0, 0x00, 0x50, 0xf0, 0xf0 };
+static uint8_t GREEN[] = { 0x00, 0xf8, 0x50, 0xf8, 0x00, 0xf8, 0x50, 0xf8 };
+static uint8_t BLUE[] = { 0x00, 0x50, 0x50, 0x50, 0x00, 0xf8, 0xf8, 0xf8 };
 #endif
 #ifdef GFXST
-static U8 RED[] = { 0x00, 0xd8, 0xb0, 0xf8,
+static uint8_t RED[] = { 0x00, 0xd8, 0xb0, 0xf8,
                     0x20, 0x00, 0x00, 0x20,
                     0x48, 0x48, 0x90, 0xd8,
                     0x48, 0x68, 0x90, 0xb0,
@@ -57,7 +57,7 @@ static U8 RED[] = { 0x00, 0xd8, 0xb0, 0xf8,
                     0x80, 0x80, 0xb0, 0xe0,
                     0x80, 0x98, 0xb0, 0xc8
 };
-static U8 GREEN[] = { 0x00, 0x00, 0x6c, 0x90,
+static uint8_t GREEN[] = { 0x00, 0x00, 0x6c, 0x90,
                       0x24, 0x48, 0x6c, 0x48,
                       0x6c, 0x24, 0x48, 0x6c,
                       0x48, 0x6c, 0x90, 0xb4,
@@ -67,7 +67,7 @@ static U8 GREEN[] = { 0x00, 0x00, 0x6c, 0x90,
                       0x9c, 0x6c, 0x84, 0x9c,
                       0x84, 0x9c, 0xb4, 0xcc
 };
-static U8 BLUE[] = { 0x00, 0x00, 0x68, 0x68,
+static uint8_t BLUE[] = { 0x00, 0x00, 0x68, 0x68,
                      0x20, 0xb0, 0xd8, 0x00,
                      0x20, 0x00, 0x00, 0x00,
                      0x48, 0x68, 0x90, 0xb0,
@@ -82,15 +82,15 @@ static U8 BLUE[] = { 0x00, 0x00, 0x68, 0x68,
  * Initialize screen
  */
 static
-SDL_Surface *initScreen(U16 w, U16 h, U8 bpp, U32 flags)
+SDL_Surface *initScreen(uint16_t w, uint16_t h, uint8_t bpp, uint32_t flags)
 {
   return SDL_SetVideoMode(w, h, bpp, flags);
 }
 
 void
-sysvid_setPalette(img_color_t *pal, U16 n)
+sysvid_setPalette(img_color_t *pal, uint16_t n)
 {
-  U16 i;
+  uint16_t i;
 
   for (i = 0; i < n; i++) {
     palette[i].r = pal[i].r;
@@ -109,7 +109,7 @@ sysvid_restorePalette()
 void
 sysvid_setGamePalette()
 {
-  U8 i;
+  uint8_t i;
   img_color_t pal[256];
 
   for (i = 0; i < 32; ++i) {
@@ -127,7 +127,7 @@ void
 sysvid_chkvm(void)
 {
   SDL_Rect **modes;
-  U8 i, mode = 0;
+  uint8_t i, mode = 0;
 
   IFDEBUG_VIDEO(sys_printf("xrick/video: checking video modes\n"););
 
@@ -173,7 +173,7 @@ void
 sysvid_init(void)
 {
   SDL_Surface *s;
-  U8 tpix;
+  uint8_t tpix;
 
   IFDEBUG_VIDEO(printf("xrick/video: start\n"););
 
@@ -246,8 +246,8 @@ void
 sysvid_update(rect_t *rects)
 {
   static SDL_Rect area;
-  U16 x, y, xz, yz;
-  U8 *p, *q, *p0, *q0;
+  uint16_t x, y, xz, yz;
+  uint8_t *p, *q, *p0, *q0;
 
   if (rects == NULL)
     return;
@@ -258,7 +258,7 @@ sysvid_update(rect_t *rects)
   while (rects) {
     p0 = sysvid_fb;
     p0 += rects->x + rects->y * SYSVID_WIDTH;
-    q0 = (U8 *)screen->pixels;
+    q0 = (uint8_t *)screen->pixels;
     q0 += (rects->x + rects->y * SYSVID_WIDTH * zoom) * zoom;
 
     for (y = rects->y; y < rects->y + rects->height; y++) {
@@ -280,14 +280,14 @@ sysvid_update(rect_t *rects)
     IFDEBUG_VIDEO2(
     for (y = rects->y; y < rects->y + rects->height; y++)
       for (yz = 0; yz < zoom; yz++) {
-	p = (U8 *)screen->pixels + rects->x * zoom + (y * zoom + yz) * SYSVID_WIDTH * zoom;
+	p = (uint8_t *)screen->pixels + rects->x * zoom + (y * zoom + yz) * SYSVID_WIDTH * zoom;
 	*p = 0x01;
 	*(p + rects->width * zoom - 1) = 0x01;
       }
 
     for (x = rects->x; x < rects->x + rects->width; x++)
       for (xz = 0; xz < zoom; xz++) {
-	p = (U8 *)screen->pixels + x * zoom + xz + rects->y * zoom * SYSVID_WIDTH * zoom;
+	p = (uint8_t *)screen->pixels + x * zoom + xz + rects->y * zoom * SYSVID_WIDTH * zoom;
 	*p = 0x01;
 	*(p + ((rects->height * zoom - 1) * zoom) * SYSVID_WIDTH) = 0x01;
       }
@@ -321,7 +321,7 @@ sysvid_clear(void)
  * Zoom
  */
 void
-sysvid_zoom(S8 z)
+sysvid_zoom(int8_t z)
 {
   if (!(videoFlags & SDL_FULLSCREEN) &&
       ((z < 0 && zoom > 1) ||
