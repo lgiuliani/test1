@@ -31,14 +31,14 @@ screen_introMain(void)
 {
   static U8 seq = 0;
   static U8 seen = 0;
-  static U8 first = TRUE;
+  static U8 first = true;
   static U8 period = 0;
   static U32 tm = 0;
 	U8 i, s[32];
 
   if (seq == 0) {
     draw_tilesBank = 0;
-    if (first == TRUE)
+    if (first != false)
       seq = 1;
     else
       seq = 4;
@@ -151,7 +151,7 @@ screen_introMain(void)
     sysvid_clear();
     seq = 0;
     seen = 0;
-    first = FALSE;
+    first = false;
     game_period = period;
     return SCREEN_DONE;
   }

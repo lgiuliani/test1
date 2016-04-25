@@ -10,14 +10,14 @@
  *
  * You must not remove this notice, or any other, from this software.
  */
-
+ 
 #include "config.h"
 #include "system.h"
 #include "game.h"
 
 U8 control_status = 0;
 U8 control_last = 0;
-U8 control_active = TRUE;
+U8 control_active = true;
 
 /* eof */
 

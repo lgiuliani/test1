@@ -14,6 +14,8 @@
 #ifndef _ENTS_H
 #define _ENTS_H
 
+#include <stdbool.h> /* bool */
+
 #include "system.h"
 #include "rects.h"
 
@@ -80,7 +82,7 @@ typedef struct {
   S16 prev_x;    /* new */
   S16 prev_y;    /* new */
   U8 prev_s;     /* new */
-  U8 front;      /* new */
+  bool front;    /* new */
   U8 trigsnd;    /* new */
 } ent_t;
 

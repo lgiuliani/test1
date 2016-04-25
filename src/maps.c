@@ -134,15 +134,15 @@ map_eflg_expand(U8 offs)
  * Chain (sub)maps
  *
  * ASM 0c08
- * return: TRUE/next submap OK, FALSE/map finished
+ * return: true/next submap OK, false/map finished
  */
 U8
 map_chain(void)
 {
   U16 c, t;
 
-  game_chsm = 0;
-  e_sbonus_counting = FALSE;
+  game_chsm = false;
+  e_sbonus_counting = false;
 
   IFDEBUG_MAPS(
     sys_printf("xrick/maps: chain submap=%#04x frow=%#04x .connect=%#04x %s\n",
@@ -175,7 +175,7 @@ map_chain(void)
     IFDEBUG_MAPS(
       sys_printf("chain to next map\n");
       );
-    return FALSE;
+    return false;
   }
   else  {
     /* next submap */
@@ -189,7 +189,7 @@ map_chain(void)
       sys_printf("xrick/maps: chain frow=%#04x\n",
 		 map_frow);
       );
-    return TRUE;
+    return true;
   }
 }
 

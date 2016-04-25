@@ -14,6 +14,7 @@
 #ifndef _DRAW_H
 #define _DRAW_H
 
+#include <stdbool.h> /* bool */
 #include "system.h"
 
 #include "rects.h"
@@ -34,7 +35,7 @@ extern rect_t draw_STATUSRECT;
 extern rect_t draw_SCREENRECT;
 
 extern void draw_setfb(U16, U16);
-extern U8 draw_clipms(S16 *, S16 *, U16 *, U16 *);
+extern bool draw_clipms(S16 *, S16 *, U16 *, U16 *);
 extern void draw_tilesList(void);
 extern void draw_tilesListImm(U8 *);
 extern U8 draw_tilesSubList(void);

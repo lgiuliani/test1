@@ -15,6 +15,7 @@
 #define _SYSTEM_H
 
 #include "config.h"
+#include <stdbool.h> /* bool */
 
 /*
  * If compiling w/gcc, then we can use attributes. UNUSED(x) flags a

@@ -28,7 +28,7 @@
 void
 screen_pause(U8 pause)
 {
-  if (pause == TRUE) {
+  if (pause != false) {
     draw_tilesBank = 0;
     draw_tllst = screen_pausedtxt;
     draw_setfb(120, 80);

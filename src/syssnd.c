@@ -27,12 +27,12 @@
 
 #define ADJVOL(S) (((S)*sndVol)/SDL_MIX_MAXVOLUME)
 
-static U8 isAudioActive = FALSE;
+static U8 isAudioActive = false;
 static channel_t channel[SYSSND_MIXCHANNELS];
 
 static U8 sndVol = SDL_MIX_MAXVOLUME;  /* internal volume */
 static U8 sndUVol = SYSSND_MAXVOL;  /* user-selected volume */
-static U8 sndMute = FALSE;  /* mute flag */
+static U8 sndMute = false;  /* mute flag */
 
 static SDL_mutex *sndlock;
 
@@ -153,7 +153,7 @@ syssnd_init(void)
   for (c = 0; c < SYSSND_MIXCHANNELS; c++)
     channel[c].loop = 0;  /* deactivate */
 
-	isAudioActive = TRUE;
+	isAudioActive = true;
 	SDL_PauseAudio(0);
 }
 
@@ -167,7 +167,7 @@ syssnd_shutdown(void)
 
   SDL_CloseAudio();
   SDL_DestroyMutex(sndlock);
-  isAudioActive = FALSE;
+  isAudioActive = false;
 }
 
 /*
@@ -243,8 +243,8 @@ syssnd_play(sound_t *sound, S8 loop)
 /*
  * Pause
  *
- * pause: TRUE or FALSE
- * clear: TRUE to cleanup all sounds and make sure we start from scratch
+ * pause: true or false
+ * clear: true to cleanup all sounds and make sure we start from scratch
  */
 void
 syssnd_pause(U8 pause, U8 clear)
@@ -253,14 +253,14 @@ syssnd_pause(U8 pause, U8 clear)
 
   if (!isAudioActive) return;
 
-  if (clear == TRUE) {
+  if (clear != false) {
     SDL_mutexP(sndlock);
     for (c = 0; c < SYSSND_MIXCHANNELS; c++)
       channel[c].loop = 0;
     SDL_mutexV(sndlock);
   }
 
-  if (pause == TRUE)
+  if (pause != false)
     SDL_PauseAudio(1);
   else
     SDL_PauseAudio(0);
@@ -366,7 +366,7 @@ syssnd_load(char *name)
 		return NULL;
 	}
 
-	s->dispose = FALSE;
+	s->dispose = false;
 
 	return s;
 }

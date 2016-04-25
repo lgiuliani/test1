@@ -109,7 +109,7 @@ sysarg_sdlcode(char *k)
 /*
 * Scan key codes sequence
 */
-int
+bool
 sysarg_scankeys(char *keys)
 {
 	char k[16];
@@ -120,44 +120,44 @@ sysarg_scankeys(char *keys)
 
 	while (keys[i] != '\0' && keys[i] != '-' && j + 1 < sizeof k)
 		k[j++] = keys[i++];
-	if (keys[i++] == '\0') return -1;
+	if (keys[i++] == '\0') return false;
 	k[j] = '\0';
 	syskbd_left = sysarg_sdlcode(k);
-	if (!syskbd_left) return -1;
+	if (!syskbd_left) return false;
 
 	j = 0;
 	while (keys[i] != '\0' && keys[i] != '-' && j + 1 < sizeof k)
 		k[j++] = keys[i++];
-	if (keys[i++] == '\0') return -1;
+	if (keys[i++] == '\0') return false;
 	k[j] = '\0';
 	syskbd_right = sysarg_sdlcode(k);
-	if (!syskbd_right) return -1;
+	if (!syskbd_right) return false;
 
 	j = 0;
 	while (keys[i] != '\0' && keys[i] != '-' && j + 1 < sizeof k)
 		k[j++] = keys[i++];
-	if (keys[i++] == '\0') return -1;
+	if (keys[i++] == '\0') return false;
 	k[j] = '\0';
 	syskbd_up = sysarg_sdlcode(k);
-	if (!syskbd_up) return -1;
+	if (!syskbd_up) return false;
 
 	j = 0;
 	while (keys[i] != '\0' && keys[i] != '-' && j + 1 < sizeof k)
 		k[j++] = keys[i++];
-	if (keys[i++] == '\0') return -1;
+	if (keys[i++] == '\0') return false;
 	k[j] = '\0';
 	syskbd_down = sysarg_sdlcode(k);
-	if (!syskbd_down) return -1;
+	if (!syskbd_down) return false;
 
 	j = 0;
 	while (keys[i] != '\0' && keys[i] != '-' && j + 1 < sizeof k)
 		k[j++] = keys[i++];
-	if (keys[i] != '\0') return -1;
+	if (keys[i] != '\0') return false;
 	k[j] = '\0';
 	syskbd_fire = sysarg_sdlcode(k);
-	if (!syskbd_fire) return -1;
+	if (!syskbd_fire) return false;
 
-	return 0;
+	return true;
 }
 
 /*
@@ -188,7 +188,7 @@ sysarg_init(int argc, char **argv)
 
 		else if (!strcmp(argv[i], "-keys")) {
 			if (++i == argc) sysarg_fail("missing key codes");
-			if (sysarg_scankeys(argv[i]) == -1)
+			if (!sysarg_scankeys(argv[i]))
 			sysarg_fail("invalid key codes");
 		}
 

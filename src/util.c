@@ -29,7 +29,7 @@
  *
  * e: entity to test against.
  * x,y: coordinates to test.
- * ret: TRUE/(x,y) is within e's space, FALSE/not.
+ * ret: true/(x,y) is within e's space, false/not.
  */
 U8
 u_fboxtest(U8 e, S16 x, S16 y)
@@ -38,9 +38,9 @@ u_fboxtest(U8 e, S16 x, S16 y)
       ent_ents[e].x + ent_ents[e].w < x ||
       ent_ents[e].y >= y ||
       ent_ents[e].y + ent_ents[e].h < y)
-    return FALSE;
+    return false;
   else
-    return TRUE;
+    return true;
 }
 
 
@@ -53,7 +53,7 @@ u_fboxtest(U8 e, S16 x, S16 y)
  *
  * e1: entity to test against (corresponds to DI in asm code).
  * e2: entity to test (corresponds to SI in asm code).
- * ret: TRUE/intersect, FALSE/not.
+ * ret: true/intersect, false/not.
  */
 U8
 u_boxtest(U8 e1, U8 e2)
@@ -70,9 +70,9 @@ u_boxtest(U8 e1, U8 e2)
       ent_ents[e1].x + 0x05 > ent_ents[e2].x + ent_ents[e2].w ||
       ent_ents[e1].y + 0x14 < ent_ents[e2].y ||
       ent_ents[e1].y > ent_ents[e2].y + ent_ents[e2].h - 1)
-    return FALSE;
+    return false;
   else
-    return TRUE;
+    return true;
 }
 
 
@@ -186,7 +186,7 @@ u_envtest(S16 x, S16 y, U8 crawl, U8 *rc0, U8 *rc1)
  * Check if x,y is within e trigger box.
  *
  * ASM 126F
- * return: FALSE if not in box, TRUE if in box.
+ * return: false if not in box, true if in box.
  */
 U8
 u_trigbox(U8 e, S16 x, S16 y)
@@ -200,9 +200,9 @@ u_trigbox(U8 e, S16 x, S16 y)
 
   if (x <= ent_ents[e].trig_x || x > xmax ||
       y <= ent_ents[e].trig_y || y > ymax)
-    return FALSE;
+    return false;
   else
-    return TRUE;
+    return true;
 }
 
 

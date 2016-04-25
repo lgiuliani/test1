@@ -99,7 +99,7 @@ screen_getname(void)
     draw_tilesListImm((U8 *)"Y@Z@.@@@\074@\075@\376");
 #endif
     name_draw();
-    pointer_show(TRUE);
+    pointer_show(true);
     seq = 2;
     break;
 
@@ -108,36 +108,36 @@ screen_getname(void)
       seq = 3;
     if (control_status & CONTROL_UP) {
       if (y > 0) {
-	pointer_show(FALSE);
+	pointer_show(false);
 	y--;
-	pointer_show(TRUE);
+	pointer_show(true);
 	tm = sys_gettime();
       }
       seq = 4;
     }
     if (control_status & CONTROL_DOWN) {
       if (y < 4) {
-	pointer_show(FALSE);
+	pointer_show(false);
 	y++;
-	pointer_show(TRUE);
+	pointer_show(true);
 	tm = sys_gettime();
       }
       seq = 5;
     }
     if (control_status & CONTROL_LEFT) {
       if (x > 0) {
-	pointer_show(FALSE);
+	pointer_show(false);
 	x--;
-	pointer_show(TRUE);
+	pointer_show(true);
 	tm = sys_gettime();
       }
       seq = 6;
     }
     if (control_status & CONTROL_RIGHT) {
       if (x < 5) {
-	pointer_show(FALSE);
+	pointer_show(false);
 	x++;
-	pointer_show(TRUE);
+	pointer_show(true);
 	tm = sys_gettime();
       }
       seq = 7;
@@ -228,7 +228,7 @@ pointer_show(U8 show)
 #ifdef GFXPC
   draw_filter = 0xaaaa; /* red */
 #endif
-  draw_tile((show == TRUE)?TILE_POINTER:'@');
+  draw_tile((show != false)?TILE_POINTER:'@');
 }
 
 static void

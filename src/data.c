@@ -40,7 +40,7 @@ static path_t path;
 /*
  * Prototypes
  */
-static int str_zipext(char *);
+static bool str_zipext(char *);
 static char *str_dup(char *);
 static char *str_slash(char *);
 
@@ -177,22 +177,22 @@ data_file_close(data_file_t *file)
 /*
  * Returns 1 if filename has .zip extension.
  */
-static int
+static bool
 str_zipext(char *name)
 {
 	int i;
 
 	i = strlen(name) - 1;
-	if (i < 0 || (name[i] != 'p' && name[i] != 'P')) return 0;
+	if (i < 0 || (name[i] != 'p' && name[i] != 'P')) return false;
 	i--;
-	if (i < 0 || (name[i] != 'i' && name[i] != 'I')) return 0;
+	if (i < 0 || (name[i] != 'i' && name[i] != 'I')) return false;
 	i--;
-	if (i < 0 || (name[i] != 'z' && name[i] != 'Z')) return 0;
+	if (i < 0 || (name[i] != 'z' && name[i] != 'Z')) return false;
 	i--;
-	if (i < 0 || name[i] != '.') return 0;
+	if (i < 0 || name[i] != '.') return false;
 	i--;
-	if (i < 0) return 0;
-	return 1;
+	if (i < 0) return false;
+	return true;
 }
 
 /*

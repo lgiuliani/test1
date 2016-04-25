@@ -25,9 +25,6 @@
 #define LEFT 1
 #define RIGHT 0
 
-#define TRUE 1
-#define FALSE 0
-
 #define GAME_PERIOD 75
 
 #define GAME_BOMBS_INIT 6
@@ -50,9 +47,9 @@ extern U16 game_map;       /* current map */
 extern U16 game_submap;    /* current submap */
 
 extern U8 game_dir;        /* direction (LEFT, RIGHT) */
-extern U8 game_chsm;       /* change submap request (TRUE, FALSE) */
+extern bool game_chsm;       /* change submap request (TRUE, FALSE) */
 
-extern U8 game_waitevt;    /* wait for events (TRUE, FALSE) */
+extern bool game_waitevt;    /* wait for events (TRUE, FALSE) */
 extern U8 game_period;     /* time between each frame, in millisecond */
 
 extern rect_t *game_rects; /* rectangles to redraw at each frame */
