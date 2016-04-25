@@ -112,7 +112,7 @@ sysarg_sdlcode(char *k)
 int
 sysarg_scankeys(char *keys)
 {
-	U8 k[16];
+	char k[16];
 	U32 i, j;
 
 	i = 0;
