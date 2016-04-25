@@ -367,8 +367,7 @@ e_rick_action2(void)
 			/* up-down: calc new y and test environment */
 			y = E_RICK_ENT.y + ((control_status & CONTROL_UP) ? -0x02 : 0x02);
 			u_envtest(E_RICK_ENT.x, y, E_RICK_STTST(E_RICK_STCRAWL), &env0, &env1);
-			if (env1 & (MAP_EFLG_SOLID|MAP_EFLG_SPAD|MAP_EFLG_WAYUP) &&
-					!(control_status & CONTROL_UP)) {
+			if ((env1 & (MAP_EFLG_SOLID|MAP_EFLG_SPAD|MAP_EFLG_WAYUP)) && !(control_status & CONTROL_UP)) {
 				/* FIXME what? */
 				E_RICK_STRST(E_RICK_STCLIMB);
 				return;

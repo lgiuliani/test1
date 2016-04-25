@@ -55,6 +55,7 @@ screen_xrick(void)
 			seq = 99;
 			wait = 0;
 		}
+		break;
 	}
 
 	if (control_status & CONTROL_EXIT)  /* check for exit request */
