@@ -207,7 +207,7 @@ game_stopmusic(void)
 void
 game_run(void)
 {
-  uint32_t tm, tmx;
+	uint32_t tm, tmx;
 
 	loaddata(); /* load cached data */
 
@@ -219,7 +219,9 @@ game_run(void)
 	while (game_state != EXIT) {
 
 		/* timer */
-		tmx = tm; tm = sys_gettime(); tmx = tm - tmx;
+		tmx = tm;
+		tm = sys_gettime();
+		tmx = tm - tmx;
 		if (tmx < game_period) sys_sleep(game_period - tmx);
 
 		/* video */
