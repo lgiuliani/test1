@@ -14,18 +14,21 @@
 #ifndef _CONTROL_H
 #define _CONTROL_H
 
-#define CONTROL_UP 0x08
-#define CONTROL_DOWN 0x04
-#define CONTROL_LEFT 0x02
-#define CONTROL_RIGHT 0x01
-#define CONTROL_PAUSE 0x80
-#define CONTROL_END 0x40
-#define CONTROL_EXIT 0x20
-#define CONTROL_FIRE 0x10
+/* Bit field structure that represent Rick's controls */
+typedef struct
+{
+    bool right:1;
+    bool left:1;
+    bool down:1;
+    bool up:1;
+    bool fire:1;
+    bool exit:1;
+    bool terminate:1;
+    bool pause:1;
+} control_state;
 
-extern uint8_t control_status;
-extern uint8_t control_last;
-extern uint8_t control_active;
+extern control_state control;
+extern bool control_active;
 
 #endif
 

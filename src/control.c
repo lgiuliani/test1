@@ -10,14 +10,16 @@
  *
  * You must not remove this notice, or any other, from this software.
  */
- 
+
+
 #include "config.h"
 #include "system.h"
 #include "game.h"
+#include "control.h"
 
-uint8_t control_status = 0;
-uint8_t control_last = 0;
-uint8_t control_active = true;
+
+control_state control;
+bool control_active = true;
 
 /* eof */
 

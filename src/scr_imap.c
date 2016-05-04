@@ -91,7 +91,6 @@ screen_introMap(void)
     drawtb();
     drawlr();
     drawsprite();
-    control_last = 0;
 
     game_rects = &draw_SCREENRECT;
 
@@ -120,18 +119,18 @@ screen_introMap(void)
     seq = 1;
     break;
   case 4:  /* wait for key release */
-    if (!(control_status & CONTROL_FIRE))
+    if (!(control.fire))
       seq = 5;
     else
       sys_sleep(50); /* .5s */
     break;
   }
 
-  if (control_status & CONTROL_FIRE) {  /* end as soon as key pressed */
+  if (control.fire) {  /* end as soon as key pressed */
     seq = 4;
   }
 
-  if (control_status & CONTROL_EXIT)  /* check for exit request */
+  if (control.exit)  /* check for exit request */
     return SCREEN_EXIT;
 
   if (seq == 5) {  /* end as soon as key pressed */

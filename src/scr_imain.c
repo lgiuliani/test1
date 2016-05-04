@@ -77,7 +77,7 @@ screen_introMain(void)
     break;
 
   case 2:  /* wait for key pressed or timeout */
-    if (control_status & CONTROL_FIRE)
+    if (control.fire)
       seq = 3;
     else if (sys_gettime() - tm > SCREEN_TIMEOUT) {
       seen++;
@@ -86,7 +86,7 @@ screen_introMain(void)
     break;
 
   case 3:  /* wait for key released */
-    if (!(control_status & CONTROL_FIRE)) {
+    if (!(control.fire)) {
       if (seen++ == 0)
 	seq = 4;
       else
@@ -127,7 +127,7 @@ screen_introMain(void)
     break;
 
   case 5:  /* wait for key pressed or timeout */
-    if (control_status & CONTROL_FIRE)
+    if (control.fire)
       seq = 6;
     else if (sys_gettime() - tm > SCREEN_TIMEOUT) {
       seen++;
@@ -136,7 +136,7 @@ screen_introMain(void)
     break;
 
   case 6:  /* wait for key released */
-    if (!(control_status & CONTROL_FIRE)) {
+    if (!(control.fire)) {
       if (seen++ == 0)
 	seq = 1;
       else
@@ -145,7 +145,7 @@ screen_introMain(void)
     break;
   }
 
-  if (control_status & CONTROL_EXIT)  /* check for exit request */
+  if (control.exit)  /* check for exit request */
     return SCREEN_EXIT;
 
   if (seq == 7) {  /* we're done */
