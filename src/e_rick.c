@@ -449,7 +449,7 @@ void e_rick_action(UNUSED(uint8_t e))
 	 */
 
 	if E_RICK_STTST(E_RICK_STSTOP) {
-		E_RICK_ENT.sprite = (game_dir ? 0x17 : 0x0B);
+		E_RICK_ENT.sprite = (game_dir == LEFT ? 0x17 : 0x0B);
 #ifdef ENABLE_SOUND
 		if (!stopped)
 		{
@@ -463,7 +463,7 @@ void e_rick_action(UNUSED(uint8_t e))
 	stopped = false;
 
 	if E_RICK_STTST(E_RICK_STSHOOT) {
-		E_RICK_ENT.sprite = (game_dir ? 0x16 : 0x0A);
+		E_RICK_ENT.sprite = (game_dir == LEFT ? 0x16 : 0x0A);
 		return;
 	}
 
@@ -478,7 +478,7 @@ void e_rick_action(UNUSED(uint8_t e))
 
 	if E_RICK_STTST(E_RICK_STCRAWL)
 	{
-		E_RICK_ENT.sprite = (game_dir ? 0x13 : 0x07);
+		E_RICK_ENT.sprite = (game_dir == LEFT ? 0x13 : 0x07);
 		if (E_RICK_ENT.x & 0x04) E_RICK_ENT.sprite++;
 #ifdef ENABLE_SOUND
 		seq = (seq + 1) & 0x03;
@@ -489,7 +489,7 @@ void e_rick_action(UNUSED(uint8_t e))
 
 	if E_RICK_STTST(E_RICK_STJUMP)
 	{
-		E_RICK_ENT.sprite = (game_dir ? 0x15 : 0x06);
+		E_RICK_ENT.sprite = (game_dir == LEFT ? 0x15 : 0x06);
 		return;
 	}
 
@@ -508,7 +508,7 @@ void e_rick_action(UNUSED(uint8_t e))
     syssnd_play(WAV_WALK, 1);
 #endif
 
-  E_RICK_ENT.sprite = (seq >> 2) + 1 + (game_dir ? 0x0c : 0x00);
+  E_RICK_ENT.sprite = (seq >> 2) + 1 + (game_dir == LEFT ? 0x0c : 0x00);
 }
 
 
@@ -548,5 +548,5 @@ void e_rick_restore(void)
 	 * plus some 6DBC stuff?
 	 */
 }
-#undef offsx 
+#undef offsx
 /* eof */

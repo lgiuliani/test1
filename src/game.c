@@ -67,7 +67,7 @@ uint32_t game_score = 0;
 uint16_t game_map = 0;
 uint16_t game_submap = 0;
 
-uint8_t game_dir = 0;
+dir_t game_dir = RIGHT;
 bool game_chsm = false;
 
 uint8_t game_cheat1 = 0;
