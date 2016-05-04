@@ -28,9 +28,6 @@
 
 #define SYSJOY_RANGE 3280
 
-#define SETBIT(x,b) x |= (b)
-#define CLRBIT(x,b) x &= ~(b)
-
 static SDL_Event event;
 
 /*
