@@ -44,14 +44,24 @@ processEvent()
   switch (event.type) {
   case SDL_KEYDOWN:
     key = event.key.keysym.sym;
-    if (key == syskbd_up || key == SDLK_UP)
+    if (key == syskbd_up || key == SDLK_UP){
         control.up = true;
+        control.down = false;
+    }
     else if (key == syskbd_down || key == SDLK_DOWN)
+    {
         control.down = true;
-    else if (key == syskbd_left || key == SDLK_LEFT)
+        control.up = false;
+    }
+    else if (key == syskbd_left || key == SDLK_LEFT) {
         control.left = true;
+        control.right = false;
+    }
     else if (key == syskbd_right || key == SDLK_RIGHT)
+    {
         control.right = true;
+        control.left = false;
+    }
     else if (key == syskbd_pause)
         control.pause = true;
     else if (key == syskbd_end)

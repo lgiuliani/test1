@@ -28,15 +28,13 @@
  */
 int16_t e_rick_stop_x = 0;
 int16_t e_rick_stop_y = 0;
-uint8_t e_rick_state = 0;
+rick_state e_rick_state = 0;
 
 /*
  * local vars
  */
 #define offsx  c1
-static uint8_t scrawl;
 static uint8_t save_crawl;
-static uint8_t trigger = false;
 static uint8_t seq;
 static uint16_t save_x, save_y;
 
@@ -60,38 +58,11 @@ e_rick_boxtest(uint8_t e)
 	if (E_RICK_ENT.x + 0x11 < ent_ents[e].x ||
 		E_RICK_ENT.x + 0x05 > ent_ents[e].x + ent_ents[e].w ||
 		E_RICK_ENT.y + 0x14 < ent_ents[e].y ||
-		E_RICK_ENT.y + (E_RICK_STTST(E_RICK_STCRAWL) ? 0x08 : 0x00) > ent_ents[e].y + ent_ents[e].h - 1)
+		E_RICK_ENT.y + ((e_rick_state == E_RICK_CRAWL) ? 0x08 : 0x00) > ent_ents[e].y + ent_ents[e].h - 1)
 		return false;
 	else
 		return true;
 }
-
-/*
- * Go zombie
- *
- * ASM 1851
- */
-void
-e_rick_gozombie(void)
-{
-#ifdef ENABLE_CHEATS
-	if (game_cheat2) return;
-#endif
-
-	/* already zombie? */
-	if E_RICK_STTST(E_RICK_STZOMBIE) return;
-
-#ifdef ENABLE_SOUND
-	syssnd_play(WAV_DIE, 1);
-#endif
-
-	E_RICK_STSET(E_RICK_STZOMBIE);
-	E_RICK_ENT.offsy = -0x0400;
-	E_RICK_ENT.offsx = (E_RICK_ENT.x > 0x80 ? -3 : +3);
-	E_RICK_ENT.ylow = 0;
-	E_RICK_ENT.front = true;
-}
-
 
 /*
  * Action sub-function for e_rick when zombie
@@ -99,7 +70,7 @@ e_rick_gozombie(void)
  * ASM 17DC
  */
 static void
-e_rick_z_action(void)
+e_rick_zombie(void)
 {
 	uint32_t i;
 
@@ -117,9 +88,204 @@ e_rick_z_action(void)
 
 	/* dead when out of screen */
 	if (E_RICK_ENT.y < 0 || E_RICK_ENT.y > 0x0140)
-		E_RICK_STSET(E_RICK_STDEAD);
+        e_rick_state = E_RICK_DEAD;
 }
 
+/*
+ * Go zombie
+ *
+ * ASM 1851
+ */
+void
+e_rick_gozombie(void)
+{
+#ifdef ENABLE_CHEATS
+	if (game_cheat2) return;
+#endif
+
+	/* already zombie? */
+	if (e_rick_state == E_RICK_ZOMBIE)
+        return;
+
+
+#ifdef ENABLE_SOUND
+	syssnd_play(WAV_DIE, 1);
+#endif
+
+	e_rick_state = E_RICK_ZOMBIE;
+	E_RICK_ENT.offsy = -0x0400;
+	E_RICK_ENT.offsx = (E_RICK_ENT.x > 0x80 ? -3 : +3);
+	E_RICK_ENT.ylow = 0;
+	E_RICK_ENT.front = true;
+}
+
+static void e_rick_move_horizontaly(void)
+{
+    int16_t x;
+    uint8_t env0, env1;
+
+    /* should move? */
+    if (!(control.left || control.right)) {
+        seq = 0; /* no: reset seq and return */
+        return;
+    }
+
+	if (control.left) {      /* move left */
+        game_dir = LEFT;
+        x = E_RICK_ENT.x - 2;
+	}
+	else if (control.right) { /* move right */
+        game_dir = RIGHT;
+        x = E_RICK_ENT.x + 2;
+	}
+
+    if (x < 0 || x >= 0xe8) {  /* prev/next submap */
+        game_chsm = true;
+        E_RICK_ENT.x = (game_dir == LEFT)? 0xe2 : 0x04;
+        return;
+    }
+
+    /* still within this map: test environment */
+	u_envtest(x, E_RICK_ENT.y, (e_rick_state == E_RICK_CRAWL), &env0, &env1);
+
+	/* save x-position if it is possible to move */
+	if (!(env1 & (MAP_EFLG_SOLID|MAP_EFLG_SPAD|MAP_EFLG_WAYUP))) {
+		E_RICK_ENT.x = x;
+		if (env1 & MAP_EFLG_LETHAL)
+            e_rick_gozombie();
+	}
+}
+
+static void e_rick_climb(void)
+{
+    uint8_t env0, env1;
+    int16_t x, y;
+
+    /* should move? */
+    if (!(control.up || control.down || control.left || control.right)) {
+        seq = 0; /* no: reset seq and return */
+        return;
+    }
+
+    x = E_RICK_ENT.x;
+    y = E_RICK_ENT.y;
+
+    if (control.up)  /* up-down: calc new y and test environment */
+        y = y - 0x02;
+    else if (control.down)
+        y = y + 0x02;
+
+    if (control.left)
+        x = x - 0x02;
+    else if (control.right)
+        x = x + 0x02;
+
+    u_envtest(x, y, false, &env0, &env1);
+
+    if (env1 & (MAP_EFLG_SOLID|MAP_EFLG_SPAD|MAP_EFLG_WAYUP) && (!control.up)) {
+            E_RICK_ENT.offsy = 0x0100;
+            e_rick_state = E_RICK_STAND;
+            return;
+    }
+
+    if (!(env1 & (MAP_EFLG_SOLID|MAP_EFLG_SPAD))) {
+        E_RICK_ENT.x = x;
+        E_RICK_ENT.y = y;
+
+        if (env1 & MAP_EFLG_LETHAL) {
+            e_rick_gozombie();
+            return;
+        }
+
+        if (!(env1 & (MAP_EFLG_VERT|MAP_EFLG_CLIMB))) {
+            /* reached end of climb zone */
+            if (control.up)
+                E_RICK_ENT.offsy = -0x0300;
+            else if (control.down)
+                E_RICK_ENT.offsy = 0x0100;
+#ifdef ENABLE_SOUND
+            if (control.up)
+                syssnd_play(WAV_JUMP, 1);
+#endif
+            e_rick_state = E_RICK_STAND;
+        }
+    }
+
+#ifdef ENABLE_SOUND
+            seq = (seq + 1) & 0x03;
+            if (seq == 0)
+                syssnd_play(WAV_WALK, 1);
+#endif
+}
+
+static inline void
+e_rick_stop(void)
+{
+    /* Play Sound once */
+    if (e_rick_state != E_RICK_STOP)
+    {
+#ifdef ENABLE_SOUND
+        syssnd_play(WAV_STICK, 1);
+        e_rick_state = E_RICK_STOP;
+#endif
+    }
+
+    if (control.right)
+    {
+        game_dir = RIGHT;
+        e_rick_stop_x = E_RICK_ENT.x + 0x17;
+    }
+    else
+    {
+        game_dir = LEFT;
+        e_rick_stop_x = E_RICK_ENT.x;
+    }
+    e_rick_stop_y = E_RICK_ENT.y + 0x000E;
+}
+
+static inline void
+e_rick_shoot(void)
+{
+    /* not an automatic gun: shoot once only */
+    if (e_rick_state == E_RICK_SHOOT)
+        return;
+    e_rick_state = E_RICK_SHOOT;
+
+    /* already a bullet in the air ... that's enough */
+    /* else use a bullet, if any available */
+    if (E_BULLET_ENT.n || !game_bullets)
+        return;
+
+#ifdef ENABLE_CHEATS
+    if (!game_cheat1) game_bullets--;
+#else
+    game_bullets--;
+#endif
+
+    e_bullet_init(E_RICK_ENT.x, E_RICK_ENT.y);
+#ifdef ENABLE_SOUND
+    syssnd_play(WAV_BULLET, 1);
+#endif
+}
+
+static inline void
+e_rick_pose_bomb(void)
+{
+    /* already a bomb ticking ... that's enough */
+    if (E_BOMB_ENT.n)
+        return;
+    /* else use a bomb, if any available */
+    if (!game_bombs)
+        return;
+#ifdef ENABLE_CHEATS
+    if (!game_cheat1)
+        game_bombs--;
+#else
+    game_bombs--;
+#endif
+    /* initialize bomb */
+    e_bomb_init(E_RICK_ENT.x, E_RICK_ENT.y);
+}
 
 /*
  * Action sub-function for e_rick.
@@ -130,300 +296,139 @@ void
 e_rick_action2(void)
 {
 	uint8_t env0, env1;
-	int16_t x, y;
+	int16_t y;
 	uint32_t i;
 
-	E_RICK_STRST(E_RICK_STSTOP|E_RICK_STSHOOT);
-
-	/* if zombie, run dedicated function and return */
-	if E_RICK_STTST(E_RICK_STZOMBIE) {
-		e_rick_z_action();
-		return;
-	}
-
 	/* climbing? */
-	if E_RICK_STTST(E_RICK_STCLIMB)
-		goto climbing;
+	if (e_rick_state == E_RICK_CLIMB){
+        e_rick_climb();
+        return;
+	}
 
 	/*
 	* NOT CLIMBING
 	*/
-	E_RICK_STRST(E_RICK_STJUMP);
 	/* calc y */
 	i = (E_RICK_ENT.y << 8) + E_RICK_ENT.offsy + E_RICK_ENT.ylow;
 	y = i >> 8;
 	/* test environment */
-	u_envtest(E_RICK_ENT.x, y, E_RICK_STTST(E_RICK_STCRAWL), &env0, &env1);
-	/* stand up, if possible */
-	if (E_RICK_STTST(E_RICK_STCRAWL) && !env0)
-		E_RICK_STRST(E_RICK_STCRAWL);
+	u_envtest(E_RICK_ENT.x, y, (e_rick_state == E_RICK_CRAWL), &env0, &env1);
+
 	/* can move vertically? */
 	if (env1 & (E_RICK_ENT.offsy < 0 ?
 					MAP_EFLG_VERT|MAP_EFLG_SOLID|MAP_EFLG_SPAD :
 					MAP_EFLG_VERT|MAP_EFLG_SOLID|MAP_EFLG_SPAD|MAP_EFLG_WAYUP))
-		goto vert_not;
+    {
+        /*
+        * NO VERTICAL MOVE
+        */
+        E_RICK_ENT.ylow = 0;
+        E_RICK_ENT.y &= 0xF8;
 
-	/*
-	* VERTICAL MOVE
-	*/
-	E_RICK_STSET(E_RICK_STJUMP);
-	/* killed? */
-	if (env1 & MAP_EFLG_LETHAL) {
-		e_rick_gozombie();
-		return;
-	}
-	/* save */
-	E_RICK_ENT.y = y;
-	E_RICK_ENT.ylow = i;
-	/* climb? */
-	if ((env1 & MAP_EFLG_CLIMB) && (control.up || control.down)) {
-		E_RICK_ENT.offsy = 0x0100;
-		E_RICK_STSET(E_RICK_STCLIMB);
-		return;
-	}
-	/* fall */
-	E_RICK_ENT.offsy += 0x0080;
-	if (E_RICK_ENT.offsy > 0x0800) {
-		E_RICK_ENT.offsy = 0x0800;
-		E_RICK_ENT.ylow = 0;
-	}
+        if (E_RICK_ENT.offsy < 0) {
+            /* not climbing + trying to go _up_ not possible -> hit the roof */
+            /* fall back to the ground */
+            E_RICK_ENT.offsy = 0;
+            e_rick_state = E_RICK_JUMP;
+            e_rick_move_horizontaly();
+            return;
+        }
+        /* else: not climbing + trying to go _down_ not possible -> standing */
+        /* align to ground */
+        E_RICK_ENT.y |= 0x03;
+
+        /* standing on a super pad? */
+        if ((env1 & MAP_EFLG_SPAD) && E_RICK_ENT.offsy >= 0X0200) {
+            E_RICK_ENT.offsy = (control.up) ? 0xf800 : 0x00fe - E_RICK_ENT.offsy;
+#ifdef ENABLE_SOUND
+            syssnd_play(WAV_PAD, 1);
+#endif
+            e_rick_move_horizontaly();
+            return;
+        }
+        E_RICK_ENT.offsy = 0x0100;  /* reset*/
+
+        if (env0) {
+            e_rick_state = E_RICK_CRAWL;
+            e_rick_move_horizontaly();
+            return;
+        }
+
+        /* standing. firing ? */
+        if (control.fire) {
+            if (control.left || control.right)  /* stop */
+                e_rick_stop();
+            else if (control.down)              /* bomb */
+                e_rick_pose_bomb();
+            else if (control.up)                /* bullet */
+                e_rick_shoot();
+            else {
+                e_rick_state = E_RICK_STAND; /* not shooting means trigger is released */
+                seq = 0 ;
+            }
+           return;
+        }
+
+        e_rick_state = E_RICK_STAND;
+
+        if (control.up) {
+            if (env1 & MAP_EFLG_CLIMB)    /* climb */
+            {
+                e_rick_state = E_RICK_CLIMB;
+                return;
+            }
+            E_RICK_ENT.offsy = -0x0580;  /* jump */
+            E_RICK_ENT.ylow = 0;
+#ifdef ENABLE_SOUND
+            syssnd_play(WAV_JUMP, 1);
+#endif
+        }
+        else if (control.down) {
+            if ((env1 & MAP_EFLG_VERT) &&                /* can go down */
+                    !(control.left || control.right) &&  /* + not moving horizontaly */
+                    (E_RICK_ENT.x & 0x1f) < 0x0a)        /* + aligned -> climb */
+            {
+                E_RICK_ENT.x &= 0xf0;
+                E_RICK_ENT.x |= 0x04;
+                e_rick_state = E_RICK_CLIMB;
+            }
+            else    /* crawl */
+            {
+                e_rick_state = E_RICK_CRAWL;
+            }
+        }
+    }
+    else
+    {
+        /* killed? */
+        if (env1 & MAP_EFLG_LETHAL) {
+            e_rick_gozombie();
+            return;
+        }
+        /* save */
+        E_RICK_ENT.y = y;
+        E_RICK_ENT.ylow = i;
+        /* climb? */
+        if ((env1 & MAP_EFLG_CLIMB) && (control.up || control.down)) {
+            e_rick_state = E_RICK_CLIMB;
+            return;
+        }
+        /* fall */
+        E_RICK_ENT.offsy += 0x0080;
+        if (E_RICK_ENT.offsy > 0x0800) {
+            E_RICK_ENT.offsy = 0x0800;
+            E_RICK_ENT.ylow = 0;
+        }
+
+        /* If not crawling, is there room before jump ? */
+        if (e_rick_state != E_RICK_CRAWL || !env0)
+            e_rick_state = E_RICK_JUMP;
+    }
 
 	/*
 	* HORIZONTAL MOVE
 	*/
-	horiz:
-	/* should move? */
-	if (!(control.left || control.right)) {
-		seq = 2; /* no: reset seq and return */
-		return;
-	}
-	if (control.left) {  /* move left */
-		x = E_RICK_ENT.x - 2;
-		game_dir = LEFT;
-		if (x < 0) {  /* prev submap */
-			game_chsm = true;
-			E_RICK_ENT.x = 0xe2;
-			return;
-		}
-	} else {  /* move right */
-		x = E_RICK_ENT.x + 2;
-		game_dir = RIGHT;
-		if (x >= 0xe8) {  /* next submap */
-			game_chsm = true;
-			E_RICK_ENT.x = 0x04;
-			return;
-		}
-	}
-
-	/* still within this map: test environment */
-	u_envtest(x, E_RICK_ENT.y, E_RICK_STTST(E_RICK_STCRAWL), &env0, &env1);
-
-	/* save x-position if it is possible to move */
-	if (!(env1 & (MAP_EFLG_SOLID|MAP_EFLG_SPAD|MAP_EFLG_WAYUP))) {
-		E_RICK_ENT.x = x;
-		if (env1 & MAP_EFLG_LETHAL) e_rick_gozombie();
-	}
-
-	/* end */
-	return;
-
-  /*
-   * NO VERTICAL MOVE
-   */
- vert_not:
-  if (E_RICK_ENT.offsy < 0) {
-    /* not climbing + trying to go _up_ not possible -> hit the roof */
-    E_RICK_STSET(E_RICK_STJUMP);  /* fall back to the ground */
-    E_RICK_ENT.y &= 0xF8;
-    E_RICK_ENT.offsy = 0;
-    E_RICK_ENT.ylow = 0;
-    goto horiz;
-  }
-  /* else: not climbing + trying to go _down_ not possible -> standing */
-  /* align to ground */
-  E_RICK_ENT.y &= 0xF8;
-  E_RICK_ENT.y |= 0x03;
-  E_RICK_ENT.ylow = 0;
-
-  /* standing on a super pad? */
-  if ((env1 & MAP_EFLG_SPAD) && E_RICK_ENT.offsy >= 0X0200) {
-    E_RICK_ENT.offsy = (control.up) ? 0xf800 : 0x00fe - E_RICK_ENT.offsy;
-#ifdef ENABLE_SOUND
-	syssnd_play(WAV_PAD, 1);
-#endif
-    goto horiz;
-  }
-
-  E_RICK_ENT.offsy = 0x0100;  /* reset*/
-
-  /* standing. firing ? */
-  if (scrawl || !(control.fire))
-    goto firing_not;
-
-  /*
-   * FIRING
-   */
-	if (control.left || control.right) {  /* stop */
-		if (control.right)
-		{
-			game_dir = RIGHT;
-			e_rick_stop_x = E_RICK_ENT.x + 0x17;
-		} else {
-			game_dir = LEFT;
-			e_rick_stop_x = E_RICK_ENT.x;
-		}
-		e_rick_stop_y = E_RICK_ENT.y + 0x000E;
-		E_RICK_STSET(E_RICK_STSTOP);
-		return;
-	}
-
-  if (control.fire && control.up) {  /* bullet */
-    E_RICK_STSET(E_RICK_STSHOOT);
-    /* not an automatic gun: shoot once only */
-    if (trigger)
-      return;
-    else
-      trigger = true;
-    /* already a bullet in the air ... that's enough */
-    if (E_BULLET_ENT.n)
-      return;
-    /* else use a bullet, if any available */
-    if (!game_bullets)
-      return;
-#ifdef ENABLE_CHEATS
-    if (!game_cheat1)
-      game_bullets--;
-#endif
-    /* initialize bullet */
-    e_bullet_init(E_RICK_ENT.x, E_RICK_ENT.y);
-    return;
-  }
-
-  trigger = false; /* not shooting means trigger is released */
-  seq = 0; /* reset */
-
-  if (control.fire && control.down) {  /* bomb */
-    /* already a bomb ticking ... that's enough */
-    if (E_BOMB_ENT.n)
-      return;
-    /* else use a bomb, if any available */
-    if (!game_bombs)
-      return;
-#ifdef ENABLE_CHEATS
-    if (!game_cheat1)
-      game_bombs--;
-#endif
-    /* initialize bomb */
-    e_bomb_init(E_RICK_ENT.x, E_RICK_ENT.y);
-    return;
-  }
-
-  return;
-
-  /*
-   * NOT FIRING
-   */
- firing_not:
-  if (control.up) {  /* jump or climb */
-    if (env1 & MAP_EFLG_CLIMB) {  /* climb */
-      E_RICK_STSET(E_RICK_STCLIMB);
-      return;
-    }
-    E_RICK_ENT.offsy = -0x0580;  /* jump */
-    E_RICK_ENT.ylow = 0;
-#ifdef ENABLE_SOUND
-    syssnd_play(WAV_JUMP, 1);
-#endif
-    goto horiz;
-  }
-  if (control.down) {  /* crawl or climb */
-    if ((env1 & MAP_EFLG_VERT) &&  /* can go down */
-	!(control.left || control.right) &&  /* + not moving horizontaly */
-	(E_RICK_ENT.x & 0x1f) < 0x0a) {  /* + aligned -> climb */
-      E_RICK_ENT.x &= 0xf0;
-      E_RICK_ENT.x |= 0x04;
-      E_RICK_STSET(E_RICK_STCLIMB);
-    }
-    else {  /* crawl */
-      E_RICK_STSET(E_RICK_STCRAWL);
-      goto horiz;
-    }
-
-  }
-  goto horiz;
-
-	/*
-	* CLIMBING
-	*/
-	climbing:
-		/* should move? */
-		if (!(control.up || control.down || control.left || control.right)) {
-			seq = 0; /* no: reset seq and return */
-			return;
-		}
-
-		if (control.up || control.down) {
-			/* up-down: calc new y and test environment */
-			y = E_RICK_ENT.y + (control.up? -0x02 : 0x02);
-			u_envtest(E_RICK_ENT.x, y, E_RICK_STTST(E_RICK_STCRAWL), &env0, &env1);
-			if ((env1 & (MAP_EFLG_SOLID|MAP_EFLG_SPAD|MAP_EFLG_WAYUP)) && !control.up) {
-				/* FIXME what? */
-				E_RICK_STRST(E_RICK_STCLIMB);
-				return;
-			}
-			if (!(env1 & (MAP_EFLG_SOLID|MAP_EFLG_SPAD|MAP_EFLG_WAYUP)) ||
-					(env1 & MAP_EFLG_WAYUP)) {
-				/* ok to move, save */
-				E_RICK_ENT.y = y;
-				if (env1 & MAP_EFLG_LETHAL) {
-					e_rick_gozombie();
-					return;
-				}
-				if (!(env1 & (MAP_EFLG_VERT|MAP_EFLG_CLIMB))) {
-					/* reached end of climb zone */
-					E_RICK_ENT.offsy = (control.up? -0x0300 : 0x0100);
-#ifdef ENABLE_SOUND
-					if (control.up)
-						syssnd_play(WAV_JUMP, 1);
-#endif
-					E_RICK_STRST(E_RICK_STCLIMB);
-					return;
-				}
-			}
-		}
-  if (control.left || control.right) {
-    /* left-right: calc new x and test environment */
-    if (control.left) {
-      x = E_RICK_ENT.x - 0x02;
-      if (x < 0) {  /* (i.e. negative) prev submap */
-	game_chsm = true;
-	/*6dbd = 0x00;*/
-	E_RICK_ENT.x = 0xe2;
-	return;
-      }
-    }
-    else {
-      x = E_RICK_ENT.x + 0x02;
-      if (x >= 0xe8) {  /* next submap */
-	game_chsm = true;
-	/*6dbd = 0x01;*/
-	E_RICK_ENT.x = 0x04;
-	return;
-      }
-    }
-    u_envtest(x, E_RICK_ENT.y, E_RICK_STTST(E_RICK_STCRAWL), &env0, &env1);
-    if (env1 & (MAP_EFLG_SOLID|MAP_EFLG_SPAD)) return;
-    E_RICK_ENT.x = x;
-    if (env1 & MAP_EFLG_LETHAL) {
-      e_rick_gozombie();
-      return;
-    }
-
-    if (env1 & (MAP_EFLG_VERT|MAP_EFLG_CLIMB)) return;
-    E_RICK_STRST(E_RICK_STCLIMB);
-    if (control.up)
-      E_RICK_ENT.offsy = -0x0300;
-  }
+    e_rick_move_horizontaly();
 }
 
 
@@ -434,80 +439,54 @@ e_rick_action2(void)
  */
 void e_rick_action(UNUSED(uint8_t e))
 {
-	static uint8_t stopped = false; /* is this the most elegant way? */
+    if (e_rick_state != E_RICK_ZOMBIE && e_rick_state != E_RICK_DEAD)
+        e_rick_action2();
 
-	e_rick_action2();
-
-	scrawl = E_RICK_STTST(E_RICK_STCRAWL);
-
-	if E_RICK_STTST(E_RICK_STZOMBIE)
-		return;
-
-	/*
-	 * set sprite
-	 */
-
-	if E_RICK_STTST(E_RICK_STSTOP) {
-		E_RICK_ENT.sprite = (game_dir == LEFT ? 0x17 : 0x0B);
+    switch(e_rick_state) {
+        case E_RICK_DEAD:
+            break;
+        case E_RICK_ZOMBIE:
+            e_rick_zombie();
+            break;
+        case E_RICK_STOP:
+            E_RICK_ENT.sprite = (game_dir == LEFT ? 0x17 : 0x0B);
+            break;
+        case E_RICK_SHOOT:
+            E_RICK_ENT.sprite = (game_dir ? 0x16 : 0x0A);
+            break;
+        case E_RICK_CLIMB:
+            E_RICK_ENT.sprite = (((E_RICK_ENT.x ^ E_RICK_ENT.y) & 0x04) ? 0x18 : 0x0c);
+            break;
+        case E_RICK_CRAWL:
+            E_RICK_ENT.sprite = (game_dir ? 0x13 : 0x07);
+            if (E_RICK_ENT.x & 0x04) E_RICK_ENT.sprite++;
 #ifdef ENABLE_SOUND
-		if (!stopped)
-		{
-			syssnd_play(WAV_STICK, 1);
-			stopped = true;
-		}
+            seq = (seq + 1) & 0x03;
+            if (seq == 0) syssnd_play(WAV_CRAWL, 1);
 #endif
-		return;
-	}
+            break;
+        case E_RICK_JUMP:
+            E_RICK_ENT.sprite = (game_dir ? 0x15 : 0x06);
+            break;
+        case E_RICK_STAND:
+            seq++;
 
-	stopped = false;
-
-	if E_RICK_STTST(E_RICK_STSHOOT) {
-		E_RICK_ENT.sprite = (game_dir == LEFT ? 0x16 : 0x0A);
-		return;
-	}
-
-	if E_RICK_STTST(E_RICK_STCLIMB) {
-		E_RICK_ENT.sprite = (((E_RICK_ENT.x ^ E_RICK_ENT.y) & 0x04) ? 0x18 : 0x0c);
+            if (seq >= 0x14)
+            {
 #ifdef ENABLE_SOUND
-		seq = (seq + 1) & 0x03;
-		if (seq == 0) syssnd_play(WAV_WALK, 1);
+                syssnd_play(WAV_WALK, 1);
 #endif
-		return;
-	}
-
-	if E_RICK_STTST(E_RICK_STCRAWL)
-	{
-		E_RICK_ENT.sprite = (game_dir == LEFT ? 0x13 : 0x07);
-		if (E_RICK_ENT.x & 0x04) E_RICK_ENT.sprite++;
+                seq = 0x04;
+            }
 #ifdef ENABLE_SOUND
-		seq = (seq + 1) & 0x03;
-		if (seq == 0) syssnd_play(WAV_CRAWL, 1);
+            else if (seq == 0x0C)
+                syssnd_play(WAV_WALK, 1);
 #endif
-		return;
-	}
-
-	if E_RICK_STTST(E_RICK_STJUMP)
-	{
-		E_RICK_ENT.sprite = (game_dir == LEFT ? 0x15 : 0x06);
-		return;
-	}
-
-	seq++;
-
-	if (seq >= 0x14)
-	{
-#ifdef ENABLE_SOUND
-		syssnd_play(WAV_WALK, 1);
-#endif
-		seq = 0x04;
-	}
-#ifdef ENABLE_SOUND
-  else
-  if (seq == 0x0C)
-    syssnd_play(WAV_WALK, 1);
-#endif
-
-  E_RICK_ENT.sprite = (seq >> 2) + 1 + (game_dir == LEFT ? 0x0c : 0x00);
+            E_RICK_ENT.sprite = (seq >> 2) + 1 + (game_dir ? 0x0c : 0x00);
+            break;
+        default:
+            break;
+    }
 }
 
 
@@ -520,7 +499,7 @@ void e_rick_save(void)
 {
 	save_x = E_RICK_ENT.x;
 	save_y = E_RICK_ENT.y;
-	save_crawl = E_RICK_STTST(E_RICK_STCRAWL);
+	save_crawl = (e_rick_state == E_RICK_CRAWL);
 	/* FIXME
 	 * save_C0 = E_RICK_ENT.b0C;
 	 * plus some 6DBC stuff?
@@ -539,9 +518,9 @@ void e_rick_restore(void)
 	E_RICK_ENT.y = save_y;
 	E_RICK_ENT.front = false;
 	if (save_crawl)
-		E_RICK_STSET(E_RICK_STCRAWL);
+		e_rick_state = E_RICK_CRAWL;
 	else
-		E_RICK_STRST(E_RICK_STCRAWL);
+		e_rick_state = E_RICK_STAND;
 	/* FIXME
 	 * E_RICK_ENT.b0C = save_C0;
 	 * plus some 6DBC stuff?

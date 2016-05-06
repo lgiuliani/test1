@@ -55,7 +55,7 @@ ent_reset(void)
 {
   uint8_t i;
 
-  E_RICK_STRST(E_RICK_STSTOP);
+  e_rick_state = E_RICK_STAND;
   e_bomb_lethal = false;
 
   ent_ents[0].n = 0;

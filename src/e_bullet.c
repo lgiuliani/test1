@@ -41,9 +41,6 @@ e_bullet_init(uint16_t x, uint16_t y)
     e_bullet_offsx = 0x08;
     E_BULLET_ENT.sprite = 0x20;
   }
-#ifdef ENABLE_SOUND
-  syssnd_play(WAV_BULLET, 1);
-#endif
 }
 
 

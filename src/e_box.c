@@ -75,7 +75,7 @@ e_box_action(uint8_t e)
 			ent_ents[e].n = 0;
 			map_marks[ent_ents[e].mark].ent |= MAP_MARK_NACT;
 		}
-		else if (E_RICK_STTST(E_RICK_STSTOP) &&
+		else if ((e_rick_state == E_RICK_STOP) &&
 				u_fboxtest(e, e_rick_stop_x, e_rick_stop_y)) {
 			/* rick's stick: explode */
 			explode(e);

@@ -239,7 +239,7 @@ e_them_t1_action(uint8_t e, uint8_t type)
   }
 
   /* rick stops them */
-  if (E_RICK_STTST(E_RICK_STSTOP) &&
+  if ((e_rick_state == E_RICK_STOP) &&
       u_fboxtest(e, e_rick_stop_x, e_rick_stop_y))
     ent_ents[e].latency = 0x14;
 
@@ -541,7 +541,7 @@ e_them_t2_action(uint8_t e)
   }
 
   /* rick stops them */
-  if (E_RICK_STTST(E_RICK_STSTOP) &&
+  if ((e_rick_state == E_RICK_STOP) &&
       u_fboxtest(e, e_rick_stop_x, e_rick_stop_y))
     ent_ents[e].latency = 0x14;
 }
@@ -622,7 +622,7 @@ e_them_t3_action2(uint8_t e)
       }
       else {
 	/* there is no next step: restart or deactivate */
-	if (!E_RICK_STTST(E_RICK_STZOMBIE) &&
+	if ((e_rick_state != E_RICK_ZOMBIE) &&
 	    !(ent_ents[e].flags & ENT_FLG_ONCE)) {
 	  /* loop this entity */
 	  ent_ents[e].sproffs = 0;
@@ -655,7 +655,7 @@ e_them_t3_action2(uint8_t e)
 
       if (ent_ents[e].flags & ENT_FLG_TRIGSTOP) {  /* reacts to rick "stop" */
 	/* wake up if triggered by rick "stop" */
-	if (E_RICK_STTST(E_RICK_STSTOP) &&
+	if ((e_rick_state == E_RICK_STOP) &&
 	    u_trigbox(e, e_rick_stop_x, e_rick_stop_y))
 	  goto wakeup;
       }
@@ -680,7 +680,7 @@ e_them_t3_action2(uint8_t e)
       /* something triggered the entity: wake up */
       /* initialize step counter */
     wakeup:
-      if E_RICK_STTST(E_RICK_STZOMBIE)
+      if (e_rick_state == E_RICK_ZOMBIE)
 	return;
 #ifdef ENABLE_SOUND
 		/*
@@ -717,7 +717,7 @@ e_them_t3_action(uint8_t e)
 
   /* if lethal, can kill rick */
   if ((ent_ents[e].n & ENT_LETHAL) &&
-      !E_RICK_STTST(E_RICK_STZOMBIE) && e_rick_boxtest(e)) {  /* CALL 1130 */
+      (e_rick_state != E_RICK_ZOMBIE) && e_rick_boxtest(e)) {  /* CALL 1130 */
     e_rick_gozombie();
   }
 }
