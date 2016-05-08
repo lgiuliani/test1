@@ -25,9 +25,9 @@ typedef struct
     bool exit:1;
     bool terminate:1;
     bool pause:1;
-} control_state;
+} control_t;
 
-extern control_state control;
+extern control_t control;
 extern bool control_active;
 
 #endif

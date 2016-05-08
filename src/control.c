@@ -18,7 +18,7 @@
 #include "control.h"
 
 
-control_state control;
+control_t control;
 bool control_active = true;
 
 /* eof */
