@@ -27,9 +27,9 @@ typedef enum {  E_RICK_STAND,
                 E_RICK_ZOMBIE,
                 E_RICK_DEAD,
                 E_RICK_CRAWL
-} rick_state;
+} e_rick_state_t;
 
-extern rick_state e_rick_state;
+extern e_rick_state_t e_rick_state;
 extern int16_t e_rick_stop_x, e_rick_stop_y;
 
 extern void e_rick_save(void);

@@ -28,13 +28,13 @@
  */
 int16_t e_rick_stop_x = 0;
 int16_t e_rick_stop_y = 0;
-rick_state e_rick_state = E_RICK_STAND;
+e_rick_state_t e_rick_state = E_RICK_STAND;
 
 /*
  * local vars
  */
 #define offsx  c1
-static uint8_t save_crawl;
+static bool save_crawl;
 static uint8_t seq;
 static uint16_t save_x, save_y;
 
@@ -138,11 +138,11 @@ e_rick_move_horizontaly(void)
 
     /* should move? */
     if (control.left) {      /* move left */
-        game_dir = LEFT;
+        isRickOnLeft = true;
         x = E_RICK_ENT.x - 2;
     }
     else if (control.right) { /* move right */
-        game_dir = RIGHT;
+        isRickOnLeft = false;
         x = E_RICK_ENT.x + 2;
     }
     else    /* no: reset seq and return */
@@ -153,7 +153,7 @@ e_rick_move_horizontaly(void)
 
     if (x < 0 || x >= 0xe8) {  /* prev/next submap */
         game_chsm = true;
-        E_RICK_ENT.x = (game_dir == LEFT)? 0xe2 : 0x04;
+        E_RICK_ENT.x = (isRickOnLeft == true)? 0xe2 : 0x04;
         return;
     }
 
@@ -245,12 +245,12 @@ e_rick_stop(void)
 
     if (control.right)
     {
-        game_dir = RIGHT;
+        isRickOnLeft = false;
         e_rick_stop_x = E_RICK_ENT.x + 0x17;
     }
     else
     {
-        game_dir = LEFT;
+        isRickOnLeft = true;
         e_rick_stop_x = E_RICK_ENT.x;
     }
     e_rick_stop_y = E_RICK_ENT.y + 0x000E;
@@ -266,7 +266,7 @@ e_rick_shoot(void)
 
     /* already a bullet in the air ... that's enough */
     /* else use a bullet, if any available */
-    if (E_BULLET_ENT.n || !game_bullets)
+    if (E_BULLET_ENT.n != 0 || game_bullets == 0)
         return;
 
 #ifdef ENABLE_CHEATS
@@ -463,16 +463,16 @@ void e_rick_action(UNUSED(uint8_t e))
             e_rick_zombie();
             break;
         case E_RICK_STOP:
-            E_RICK_ENT.sprite = (game_dir == LEFT ? 0x17 : 0x0B);
+            E_RICK_ENT.sprite = (isRickOnLeft == true ? 0x17 : 0x0B);
             break;
         case E_RICK_SHOOT:
-            E_RICK_ENT.sprite = (game_dir ? 0x16 : 0x0A);
+            E_RICK_ENT.sprite = (isRickOnLeft ? 0x16 : 0x0A);
             break;
         case E_RICK_CLIMB:
             E_RICK_ENT.sprite = (((E_RICK_ENT.x ^ E_RICK_ENT.y) & 0x04) ? 0x18 : 0x0c);
             break;
         case E_RICK_CRAWL:
-            E_RICK_ENT.sprite = (game_dir ? 0x13 : 0x07);
+            E_RICK_ENT.sprite = (isRickOnLeft ? 0x13 : 0x07);
             if (E_RICK_ENT.x & 0x04) E_RICK_ENT.sprite++;
 #ifdef ENABLE_SOUND
             seq = (seq + 1) & 0x03;
@@ -480,7 +480,7 @@ void e_rick_action(UNUSED(uint8_t e))
 #endif
             break;
         case E_RICK_JUMP:
-            E_RICK_ENT.sprite = (game_dir ? 0x15 : 0x06);
+            E_RICK_ENT.sprite = (isRickOnLeft ? 0x15 : 0x06);
             break;
         case E_RICK_STAND:
             seq++;
@@ -496,7 +496,7 @@ void e_rick_action(UNUSED(uint8_t e))
             else if (seq == 0x0C)
                 syssnd_play(WAV_WALK, 1);
 #endif
-            E_RICK_ENT.sprite = (seq >> 2) + 1 + (game_dir ? 0x0c : 0x00);
+            E_RICK_ENT.sprite = (seq >> 2) + 1 + (isRickOnLeft ? 0x0c : 0x00);
             break;
         default:
             break;

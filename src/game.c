@@ -67,7 +67,7 @@ uint32_t game_score = 0;
 uint16_t game_map = 0;
 uint16_t game_submap = 0;
 
-dir_t game_dir = RIGHT;
+bool isRickOnLeft = false;
 bool game_chsm = false;
 
 bool game_cheat1 = false;
@@ -588,7 +588,7 @@ init(void)
     i = 0;
     while (i < MAP_NBR_CONNECT &&
 	   (map_connect[i].submap != game_submap ||
-	    map_connect[i].dir != RIGHT))
+	    map_connect[i].dir != false))
       i++;
     map_frow = map_connect[i].rowin - 0x10;
     ent_ents[1].y = 0x10 << 3;

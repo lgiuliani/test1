@@ -147,7 +147,7 @@ map_chain(void)
   IFDEBUG_MAPS(
     sys_printf("xrick/maps: chain submap=%#04x frow=%#04x .connect=%#04x %s\n",
 	       game_submap, map_frow, c,
-	       (game_dir == LEFT ? "-> left" : "-> right"));
+	       (isRickOnLeft == true ? "-> left" : "-> right"));
   );
 
   /*
@@ -157,7 +157,7 @@ map_chain(void)
   for (c = map_submaps[game_submap].connect; ; c++) {
     if (map_connect[c].dir == 0xff)
       sys_panic("(map_chain) can not find connector\n");
-    if (map_connect[c].dir != game_dir) continue;
+    if (map_connect[c].dir != isRickOnLeft) continue;
     t = (ent_ents[1].y >> 3) + map_frow - map_connect[c].rowout;
     if (t < 3) break;
   }

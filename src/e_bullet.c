@@ -33,7 +33,7 @@ e_bullet_init(uint16_t x, uint16_t y)
   E_BULLET_ENT.n = 0x02;
   E_BULLET_ENT.x = x;
   E_BULLET_ENT.y = y + 0x0006;
-  if (game_dir == LEFT) {
+  if (isRickOnLeft == true) {
     e_bullet_offsx = -0x08;
     E_BULLET_ENT.sprite = 0x21;
   }

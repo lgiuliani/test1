@@ -335,7 +335,7 @@ draw_sprite(uint8_t number, uint16_t x, uint16_t y)
  */
 #ifdef GFXST
 void
-draw_sprite2(uint8_t number, uint16_t x, uint16_t y, uint8_t front)
+draw_sprite2(uint8_t number, uint16_t x, uint16_t y, bool front)
 {
   uint32_t d = 0;   /* sprite data */
   int16_t x0, y0;  /* clipped x, y */
@@ -415,7 +415,7 @@ draw_sprite2(uint8_t number, uint16_t x, uint16_t y, uint8_t front)
  */
 #ifdef GFXPC
 void
-draw_sprite2(uint8_t number, uint16_t x, uint16_t y, uint8_t front)
+draw_sprite2(uint8_t number, uint16_t x, uint16_t y, bool front)
 {
   uint8_t k, *f, c, r, dx;
   uint16_t cmax, rmax;

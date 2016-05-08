@@ -41,7 +41,7 @@ extern void draw_tilesListImm(uint8_t *);
 extern uint8_t draw_tilesSubList(void);
 extern void draw_tile(register uint8_t);
 extern void draw_sprite(uint8_t, uint16_t, uint16_t);
-extern void draw_sprite2(uint8_t, uint16_t, uint16_t, uint8_t);
+extern void draw_sprite2(uint8_t, uint16_t, uint16_t, bool);
 extern void draw_spriteBackground(uint16_t, uint16_t);
 extern void draw_map(void);
 extern void draw_drawStatus(void);

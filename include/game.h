@@ -22,11 +22,6 @@
 #include "rects.h"
 #include "data.h"
 
-typedef enum {
-    RIGHT,
-    LEFT
-} dir_t;
-
 #define GAME_PERIOD 75
 
 #define GAME_BOMBS_INIT 6
@@ -48,7 +43,7 @@ extern hscore_t game_hscores[8];  /* highest scores (hall of fame) */
 extern uint16_t game_map;       /* current map */
 extern uint16_t game_submap;    /* current submap */
 
-extern dir_t game_dir;        /* direction (LEFT, RIGHT) */
+extern bool isRickOnLeft;        /* direction (LEFT, RIGHT) */
 extern bool game_chsm;       /* change submap request (TRUE, FALSE) */
 
 extern bool game_waitevt;    /* wait for events (TRUE, FALSE) */
