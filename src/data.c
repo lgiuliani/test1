@@ -79,7 +79,7 @@ void
 data_closepath()
 {
 	if (path.zip) {
-		unzClose(path.zip);
+		(void)unzClose(path.zip);
 		path.zip = NULL;
 	}
 	free(path.name);
@@ -102,7 +102,7 @@ data_file_open(char *name)
 	    z->zip = unzDup(path.zip);
 	    if (unzLocateFile(z->zip, name, 0) != UNZ_OK ||
 	    	unzOpenCurrentFile(z->zip) != UNZ_OK) {
-			unzClose(z->zip);
+			(void)unzClose(z->zip);
 			free(z);
 			z = NULL;
 		}
