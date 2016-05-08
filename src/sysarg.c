@@ -171,7 +171,7 @@ sysarg_init(int argc, char **argv)
 	for (i = 1; i < argc; i++) {
 
 		if (!strcmp(argv[i], "-fullscreen")) {
-			sysarg_args_fullscreen = ture;
+			sysarg_args_fullscreen = true;
 		}
 
 		else if (!strcmp(argv[i], "-help") ||
