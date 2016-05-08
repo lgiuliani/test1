@@ -112,7 +112,7 @@ typedef struct {
 #endif
   uint8_t *buf;
   uint32_t len;
-  uint8_t dispose;
+  bool dispose;
 } sound_t;
 
 extern void syssnd_init(void);
@@ -120,11 +120,11 @@ extern void syssnd_shutdown(void);
 extern void syssnd_vol(int8_t);
 extern void syssnd_toggleMute(void);
 extern void syssnd_play(sound_t *, int8_t);
-extern void syssnd_pause(uint8_t, uint8_t);
+extern void syssnd_pause(bool, bool);
 extern void syssnd_stopchan(int8_t);
 extern void syssnd_stopsound(sound_t *);
 extern void syssnd_stopall();
-extern int syssnd_isplaying(sound_t *);
+extern bool syssnd_isplaying(sound_t *);
 extern sound_t *syssnd_load(char *name);
 extern void syssnd_free(sound_t *);
 #endif
@@ -135,7 +135,7 @@ extern void syssnd_free(sound_t *);
 extern int sysarg_args_period;
 extern int sysarg_args_map;
 extern int sysarg_args_submap;
-extern int sysarg_args_fullscreen;
+extern bool sysarg_args_fullscreen;
 extern int sysarg_args_zoom;
 #ifdef ENABLE_SOUND
 extern int sysarg_args_nosound;

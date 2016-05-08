@@ -27,7 +27,7 @@
  */
 static uint16_t step;              /* current step */
 static uint16_t count;             /* number of loops for current step */
-static uint16_t run;               /* 1 = run, 0 = no more step */
+static bool run;                   /* true = run, false = no more step */
 static uint8_t flipflop;           /* flipflop for top, bottom, left, right */
 static uint16_t spnum;             /* sprite number */
 static uint16_t spx, spdx;         /* sprite x position and delta */
@@ -246,7 +246,7 @@ nextstep(void)
     step++;
   }
   else {
-    run = 0;
+    run = false;
   }
 }
 
@@ -284,7 +284,7 @@ anim(void)
 static void
 init(void)
 {
-  run = 0; run--;
+  run = true; //run--;
   step = screen_imapsofs[game_map];
   spx = screen_imapsteps[step].dx;
   spy = screen_imapsteps[step].dy;

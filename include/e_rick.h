@@ -36,7 +36,7 @@ extern void e_rick_save(void);
 extern void e_rick_restore(void);
 extern void e_rick_action(uint8_t);
 extern void e_rick_gozombie(void);
-extern uint8_t e_rick_boxtest(uint8_t);
+extern bool e_rick_boxtest(uint8_t);
 
 #endif
 

@@ -136,7 +136,7 @@ map_eflg_expand(uint8_t offs)
  * ASM 0c08
  * return: true/next submap OK, false/map finished
  */
-uint8_t
+bool
 map_chain(void)
 {
   uint16_t c, t;

@@ -44,7 +44,7 @@ static sdlcodes_t sdlcodes[SDLK_LAST] = {
 int sysarg_args_period = 0;
 int sysarg_args_map = 0;
 int sysarg_args_submap = 0;
-int sysarg_args_fullscreen = 0;
+bool sysarg_args_fullscreen = false;
 int sysarg_args_zoom = 0;
 int sysarg_args_nosound = 0;
 int sysarg_args_vol = 0;
@@ -171,7 +171,7 @@ sysarg_init(int argc, char **argv)
 	for (i = 1; i < argc; i++) {
 
 		if (!strcmp(argv[i], "-fullscreen")) {
-			sysarg_args_fullscreen = 1;
+			sysarg_args_fullscreen = ture;
 		}
 
 		else if (!strcmp(argv[i], "-help") ||

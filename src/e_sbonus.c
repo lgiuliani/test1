@@ -24,7 +24,7 @@
 /*
  * public vars
  */
-uint8_t e_sbonus_counting = false;
+bool e_sbonus_counting = false;
 uint8_t e_sbonus_counter = 0;
 uint16_t e_sbonus_bonus = 0;
 

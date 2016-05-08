@@ -26,7 +26,7 @@
  * Display the pause indicator
  */
 void
-screen_pause(uint8_t pause)
+screen_pause(bool pause)
 {
   if (pause != false) {
     draw_tilesBank = 0;

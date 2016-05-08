@@ -28,7 +28,7 @@
  */
 int16_t e_rick_stop_x = 0;
 int16_t e_rick_stop_y = 0;
-rick_state e_rick_state = 0;
+rick_state e_rick_state = E_RICK_STAND;
 
 /*
  * local vars
@@ -58,7 +58,7 @@ static void e_rick_action2(void);
  *    is assumed to point to rick).
  * ret: true/intersect, false/not.
  */
-uint8_t
+bool
 e_rick_boxtest(uint8_t e)
 {
 	/*
@@ -285,11 +285,10 @@ void
 e_rick_pose_bomb(void)
 {
     /* already a bomb ticking ... that's enough */
-    if (E_BOMB_ENT.n)
-        return;
     /* else use a bomb, if any available */
-    if (!game_bombs)
+    if (E_BOMB_ENT.n || !game_bombs)
         return;
+
 #ifdef ENABLE_CHEATS
     if (!game_cheat1)
         game_bombs--;
@@ -377,12 +376,10 @@ e_rick_action2(void)
                 e_rick_shoot();
             else {
                 e_rick_state = E_RICK_STAND; /* not shooting means trigger is released */
-                seq = 0 ;
+                seq = 0; /* Avoid Rick to walk */
             }
            return;
         }
-
-        e_rick_state = E_RICK_STAND;
 
         if (control.up) {
             if (env1 & MAP_EFLG_CLIMB)    /* climb */
@@ -403,12 +400,17 @@ e_rick_action2(void)
                 E_RICK_ENT.x &= 0xf0;
                 E_RICK_ENT.x |= 0x04;
                 e_rick_state = E_RICK_CLIMB;
+                return;
             }
             else    /* crawl */
             {
                 e_rick_state = E_RICK_CRAWL;
+                e_rick_move_horizontaly();
+                return;
             }
         }
+
+        e_rick_state = E_RICK_STAND;
     }
     else
     {

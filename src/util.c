@@ -31,7 +31,7 @@
  * x,y: coordinates to test.
  * ret: true/(x,y) is within e's space, false/not.
  */
-uint8_t
+bool
 u_fboxtest(uint8_t e, int16_t x, int16_t y)
 {
   if (ent_ents[e].x >= x ||
@@ -55,7 +55,7 @@ u_fboxtest(uint8_t e, int16_t x, int16_t y)
  * e2: entity to test (corresponds to SI in asm code).
  * ret: true/intersect, false/not.
  */
-uint8_t
+bool
 u_boxtest(uint8_t e1, uint8_t e2)
 {
   /* rick is special (may be crawling) */
@@ -87,7 +87,7 @@ u_boxtest(uint8_t e1, uint8_t e2)
  * rc1: anything CHANGED to the environment flag (6DAD)
  */
 void
-u_envtest(int16_t x, int16_t y, uint8_t crawl, uint8_t *rc0, uint8_t *rc1)
+u_envtest(int16_t x, int16_t y, bool crawl, uint8_t *rc0, uint8_t *rc1)
 {
   uint8_t i, xx;
 
@@ -188,7 +188,7 @@ u_envtest(int16_t x, int16_t y, uint8_t crawl, uint8_t *rc0, uint8_t *rc1)
  * ASM 126F
  * return: false if not in box, true if in box.
  */
-uint8_t
+bool
 u_trigbox(uint8_t e, int16_t x, int16_t y)
 {
   uint16_t xmax, ymax;

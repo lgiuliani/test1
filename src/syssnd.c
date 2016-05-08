@@ -27,12 +27,12 @@
 
 #define ADJVOL(S) (((S)*sndVol)/SDL_MIX_MAXVOLUME)
 
-static uint8_t isAudioActive = false;
+static bool isAudioActive = false;
 static channel_t channel[SYSSND_MIXCHANNELS];
 
 static uint8_t sndVol = SDL_MIX_MAXVOLUME;  /* internal volume */
 static uint8_t sndUVol = SYSSND_MAXVOL;  /* user-selected volume */
-static uint8_t sndMute = false;  /* mute flag */
+static bool sndMute = false;  /* mute flag */
 
 static SDL_mutex *sndlock;
 
@@ -247,7 +247,7 @@ syssnd_play(sound_t *sound, int8_t loop)
  * clear: true to cleanup all sounds and make sure we start from scratch
  */
 void
-syssnd_pause(uint8_t pause, uint8_t clear)
+syssnd_pause(bool pause, bool clear)
 {
   uint8_t c;
 
@@ -299,15 +299,15 @@ syssnd_stopsound(sound_t *sound)
 /*
  * See if a sound is playing
  */
-int
+bool
 syssnd_isplaying(sound_t *sound)
 {
 	uint8_t i, playing;
 
-	playing = 0;
+	playing = false;
 	SDL_mutexP(sndlock);
 	for (i = 0; i < SYSSND_MIXCHANNELS; i++)
-		if (channel[i].snd == sound) playing = 1;
+		if (channel[i].snd == sound) playing = true;
 	SDL_mutexV(sndlock);
 	return playing;
 }
@@ -413,7 +413,7 @@ sdlRWops_read(SDL_RWops *context, void *ptr, int size, int maxnum)
 static int
 sdlRWops_write(SDL_RWops *context, const void *ptr, int size, int num)
 {
-	// not implemented 
+	// not implemented
 	return -1;
 }
 */

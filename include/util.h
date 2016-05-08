@@ -14,10 +14,10 @@
 #ifndef _UTIL_H
 #define _UTIL_H
 
-extern void u_envtest(int16_t, int16_t, uint8_t, uint8_t *, uint8_t *);
-extern uint8_t u_boxtest(uint8_t, uint8_t);
-extern uint8_t u_fboxtest(uint8_t, int16_t, int16_t);
-extern uint8_t u_trigbox(uint8_t, int16_t, int16_t);
+extern void u_envtest(int16_t, int16_t, bool, uint8_t *, uint8_t *);
+extern bool u_boxtest(uint8_t, uint8_t);
+extern bool u_fboxtest(uint8_t, int16_t, int16_t);
+extern bool u_trigbox(uint8_t, int16_t, int16_t);
 
 #endif
 

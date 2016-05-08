@@ -43,7 +43,7 @@ extern uint8_t screen_introMain(void);  /* main intro */
 extern uint8_t screen_introMap(void);  /* map intro */
 extern uint8_t screen_gameover(void);  /* gameover */
 extern uint8_t screen_getname(void);  /* enter you name */
-extern void screen_pause(uint8_t);  /* pause indicator */
+extern void screen_pause(bool);  /* pause indicator */
 
 #endif
 

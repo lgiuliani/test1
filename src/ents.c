@@ -334,7 +334,7 @@ ent_draw(void)
 {
   uint8_t i;
 #ifdef ENABLE_CHEATS
-  static uint8_t ch3 = false;
+  static bool ch3 = false;
 #endif
   int16_t dx, dy;
 

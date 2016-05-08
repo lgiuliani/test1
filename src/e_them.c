@@ -44,7 +44,7 @@ static uint16_t e_them_rndnbr = 0;
  * e: entity slot number.
  * ret: true/boxtests, false/not
  */
-uint8_t
+bool
 u_themtest(uint8_t e)
 {
   uint8_t i;

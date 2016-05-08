@@ -31,7 +31,7 @@ screen_introMain(void)
 {
   static uint8_t seq = 0;
   static uint8_t seen = 0;
-  static uint8_t first = true;
+  static bool first = true;
   static uint8_t period = 0;
   static uint32_t tm = 0;
   uint8_t i, s[32];

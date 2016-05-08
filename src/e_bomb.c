@@ -36,7 +36,7 @@ uint8_t e_bomb_ticker;
  * ASM 11CD
  * returns: true/hit, false/not
  */
-uint8_t e_bomb_hit(uint8_t e)
+bool e_bomb_hit(uint8_t e)
 {
 	if (ent_ents[e].x > (E_BOMB_ENT.x >= 0xE0 ? 0xFF : E_BOMB_ENT.x + 0x20))
 			return false;

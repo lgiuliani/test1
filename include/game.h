@@ -62,9 +62,9 @@ extern void game_stopmusic(void);
 
 
 #ifdef ENABLE_CHEATS
-extern uint8_t game_cheat1;     /* infinite lives, bombs and bullets */
-extern uint8_t game_cheat2;     /* never die */
-extern uint8_t game_cheat3;     /* highlight sprites */
+extern bool game_cheat1;     /* infinite lives, bombs and bullets */
+extern bool game_cheat2;     /* never die */
+extern bool game_cheat3;     /* highlight sprites */
 extern void game_toggleCheat(uint8_t);
 #endif
 

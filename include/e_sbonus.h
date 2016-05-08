@@ -16,7 +16,7 @@
 
 #include "system.h"
 
-extern uint8_t e_sbonus_counting;
+extern bool e_sbonus_counting;
 extern uint8_t e_sbonus_counter;
 extern uint16_t e_sbonus_bonus;
 

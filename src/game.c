@@ -70,9 +70,9 @@ uint16_t game_submap = 0;
 dir_t game_dir = RIGHT;
 bool game_chsm = false;
 
-uint8_t game_cheat1 = 0;
-uint8_t game_cheat2 = 0;
-uint8_t game_cheat3 = 0;
+bool game_cheat1 = false;
+bool game_cheat2 = false;
+bool game_cheat3 = false;
 
 #ifdef GFXST
 hscore_t game_hscores[8] = {

@@ -37,7 +37,7 @@ static uint8_t name[10];
 /*
  * prototypes
  */
-static void pointer_show(uint8_t);
+static void pointer_show(bool);
 static void name_update(void);
 static void name_draw(void);
 
@@ -222,7 +222,7 @@ screen_getname(void)
 
 
 static void
-pointer_show(uint8_t show)
+pointer_show(bool show)
 {
   draw_setfb(TOPLEFT_X + x * 8 * 2, TOPLEFT_Y + y * 8 * 2 + 8);
 #ifdef GFXPC
