@@ -39,6 +39,17 @@ static uint8_t seq;
 static uint16_t save_x, save_y;
 
 /*
+ * Prototypes
+ */
+static void e_rick_zombie(void);
+static void e_rick_move_horizontaly(void);
+static void e_rick_climb(void);
+static void e_rick_stop(void);
+static void e_rick_shoot(void);
+static void e_rick_pose_bomb(void);
+static void e_rick_action2(void);
+
+/*
  * Box test
  *
  * ASM 113E (based on)
@@ -62,33 +73,6 @@ e_rick_boxtest(uint8_t e)
 		return false;
 	else
 		return true;
-}
-
-/*
- * Action sub-function for e_rick when zombie
- *
- * ASM 17DC
- */
-static void
-e_rick_zombie(void)
-{
-	uint32_t i;
-
-	/* sprite */
-	E_RICK_ENT.sprite = (E_RICK_ENT.x & 0x04) ? 0x1A : 0x19;
-
-	/* x */
-	E_RICK_ENT.x += E_RICK_ENT.offsx;
-
-	/* y */
-	i = (E_RICK_ENT.y << 8) + E_RICK_ENT.offsy + E_RICK_ENT.ylow;
-	E_RICK_ENT.y = i >> 8;
-	E_RICK_ENT.offsy += 0x80;
-	E_RICK_ENT.ylow = i;
-
-	/* dead when out of screen */
-	if (E_RICK_ENT.y < 0 || E_RICK_ENT.y > 0x0140)
-        e_rick_state = E_RICK_DEAD;
 }
 
 /*
@@ -119,25 +103,53 @@ e_rick_gozombie(void)
 	E_RICK_ENT.front = true;
 }
 
-static void e_rick_move_horizontaly(void)
+/*
+ * Action sub-function for e_rick when zombie
+ *
+ * ASM 17DC
+ */
+void
+e_rick_zombie(void)
+{
+	uint32_t i;
+
+	/* sprite */
+	E_RICK_ENT.sprite = (E_RICK_ENT.x & 0x04) ? 0x1A : 0x19;
+
+	/* x */
+	E_RICK_ENT.x += E_RICK_ENT.offsx;
+
+	/* y */
+	i = (E_RICK_ENT.y << 8) + E_RICK_ENT.offsy + E_RICK_ENT.ylow;
+	E_RICK_ENT.y = i >> 8;
+	E_RICK_ENT.offsy += 0x80;
+	E_RICK_ENT.ylow = i;
+
+	/* dead when out of screen */
+	if (E_RICK_ENT.y < 0 || E_RICK_ENT.y > 0x0140)
+        e_rick_state = E_RICK_DEAD;
+}
+
+void
+e_rick_move_horizontaly(void)
 {
     int16_t x;
     uint8_t env0, env1;
 
     /* should move? */
-    if (!(control.left || control.right)) {
-        seq = 0; /* no: reset seq and return */
-        return;
-    }
-
-	if (control.left) {      /* move left */
+    if (control.left) {      /* move left */
         game_dir = LEFT;
         x = E_RICK_ENT.x - 2;
-	}
-	else if (control.right) { /* move right */
+    }
+    else if (control.right) { /* move right */
         game_dir = RIGHT;
         x = E_RICK_ENT.x + 2;
-	}
+    }
+    else    /* no: reset seq and return */
+    {
+        seq = 0;
+        return;
+    }
 
     if (x < 0 || x >= 0xe8) {  /* prev/next submap */
         game_chsm = true;
@@ -146,17 +158,18 @@ static void e_rick_move_horizontaly(void)
     }
 
     /* still within this map: test environment */
-	u_envtest(x, E_RICK_ENT.y, (e_rick_state == E_RICK_CRAWL), &env0, &env1);
+    u_envtest(x, E_RICK_ENT.y, (e_rick_state == E_RICK_CRAWL), &env0, &env1);
 
-	/* save x-position if it is possible to move */
-	if (!(env1 & (MAP_EFLG_SOLID|MAP_EFLG_SPAD|MAP_EFLG_WAYUP))) {
-		E_RICK_ENT.x = x;
-		if (env1 & MAP_EFLG_LETHAL)
+    /* save x-position if it is possible to move */
+    if (!(env1 & (MAP_EFLG_SOLID|MAP_EFLG_SPAD|MAP_EFLG_WAYUP))) {
+        E_RICK_ENT.x = x;
+        if (env1 & MAP_EFLG_LETHAL)
             e_rick_gozombie();
-	}
+    }
 }
 
-static void e_rick_climb(void)
+void
+e_rick_climb(void)
 {
     uint8_t env0, env1;
     int16_t x, y;
@@ -218,7 +231,7 @@ static void e_rick_climb(void)
 #endif
 }
 
-static inline void
+void
 e_rick_stop(void)
 {
     /* Play Sound once */
@@ -243,7 +256,7 @@ e_rick_stop(void)
     e_rick_stop_y = E_RICK_ENT.y + 0x000E;
 }
 
-static inline void
+void
 e_rick_shoot(void)
 {
     /* not an automatic gun: shoot once only */
@@ -268,7 +281,7 @@ e_rick_shoot(void)
 #endif
 }
 
-static inline void
+void
 e_rick_pose_bomb(void)
 {
     /* already a bomb ticking ... that's enough */
@@ -378,7 +391,6 @@ e_rick_action2(void)
                 return;
             }
             E_RICK_ENT.offsy = -0x0580;  /* jump */
-            E_RICK_ENT.ylow = 0;
 #ifdef ENABLE_SOUND
             syssnd_play(WAV_JUMP, 1);
 #endif
@@ -505,7 +517,6 @@ void e_rick_save(void)
 	 * plus some 6DBC stuff?
 	 */
 }
-
 
 /*
  * Restore status

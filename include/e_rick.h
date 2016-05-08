@@ -28,23 +28,10 @@ typedef enum {  E_RICK_STAND,
                 E_RICK_DEAD,
                 E_RICK_CRAWL
 		} rick_state;
-extern rick_state e_rick_state;
-//extern uint8_t e_rick_state;
 
+extern rick_state e_rick_state;
 extern int16_t e_rick_stop_x, e_rick_stop_y;
 
-/*#define E_RICK_STSTOP 0x01
-#define E_RICK_STSHOOT 0x02
-#define E_RICK_STCLIMB 0x04
-#define E_RICK_STJUMP 0x08
-#define E_RICK_STZOMBIE 0x10
-#define E_RICK_STDEAD 0x20
-#define E_RICK_STCRAWL 0x40
-
-#define E_RICK_STSET(X) e_rick_state |= (X)
-#define E_RICK_STRST(X) e_rick_state &= ~(X)
-#define E_RICK_STTST(X) (e_rick_state & (X))
-*/
 extern void e_rick_save(void);
 extern void e_rick_restore(void);
 extern void e_rick_action(uint8_t);
