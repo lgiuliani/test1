@@ -17,14 +17,14 @@
 /* Bit field structure that represent Rick's controls */
 typedef struct
 {
-    bool right:1;
-    bool left:1;
-    bool down:1;
-    bool up:1;
-    bool fire:1;
-    bool exit:1;
-    bool terminate:1;
-    bool pause:1;
+    bool right;
+    bool left;
+    bool down;
+    bool up;
+    bool fire;
+    bool exit;
+    bool terminate;
+    bool pause;
 } control_t;
 
 extern control_t control;
