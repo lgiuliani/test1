@@ -495,9 +495,9 @@ frame(void)
     case SCROLL_UP:
       switch (scroll_up()) {
       case SCROLL_RUNNING:
-	return;
+        return;
       case SCROLL_DONE:
-	game_state = PLAY0;
+        game_state = PLAY0;
 	break;
       }
       break;
@@ -507,9 +507,9 @@ frame(void)
     case SCROLL_DOWN:
       switch (scroll_down()) {
       case SCROLL_RUNNING:
-	return;
+        return;
       case SCROLL_DONE:
-	game_state = PLAY0;
+        game_state = PLAY0;
 	break;
       }
       break;

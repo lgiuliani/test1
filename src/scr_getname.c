@@ -47,7 +47,7 @@ static void name_draw(void);
  *
  * return: 0 while running, 1 when finished.
  */
-uint8_t
+screen_status_t
 screen_getname(void)
 {
   static uint32_t tm = 0;

@@ -28,7 +28,7 @@
  * DevTools
  */
 
-uint8_t
+screen_status_t
 devtools_run(void)
 {
   static uint8_t seq = 0;

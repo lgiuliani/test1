@@ -17,9 +17,12 @@
 #include "system.h"
 
 #define SCREEN_TIMEOUT 4000
-#define SCREEN_RUNNING 0
-#define SCREEN_DONE 1
-#define SCREEN_EXIT 2
+
+typedef enum {
+    SCREEN_RUNNING,
+    SCREEN_DONE,
+    SCREEN_EXIT
+}screen_status_t;
 
 typedef struct {
   uint16_t count;  /* number of loops */
@@ -38,11 +41,11 @@ extern uint8_t screen_gameovertxt[];  /* game over */
 extern uint8_t screen_pausedtxt[];  /* paused */
 extern uint8_t screen_congrats[];  /* congratulations */
 
-extern uint8_t screen_xrick(void);  /* splash */
-extern uint8_t screen_introMain(void);  /* main intro */
-extern uint8_t screen_introMap(void);  /* map intro */
-extern uint8_t screen_gameover(void);  /* gameover */
-extern uint8_t screen_getname(void);  /* enter you name */
+extern screen_status_t screen_xrick(void);  /* splash */
+extern screen_status_t screen_introMain(void);  /* main intro */
+extern screen_status_t screen_introMap(void);  /* map intro */
+extern screen_status_t screen_gameover(void);  /* gameover */
+extern screen_status_t screen_getname(void);  /* enter you name */
 extern void screen_pause(bool);  /* pause indicator */
 
 #endif

@@ -14,13 +14,15 @@
 #ifndef _SCROLLER_H
 #define _SCROLLER_H
 
-#define SCROLL_RUNNING 1
-#define SCROLL_DONE 0
+typedef enum {
+    SCROLL_RUNNING,
+    SCROLL_DONE
+} scroll_t;
 
 #define SCROLL_PERIOD 24
 
-extern uint8_t scroll_up(void);
-extern uint8_t scroll_down(void);
+extern scroll_t scroll_up(void);
+extern scroll_t scroll_down(void);
 
 #endif
 

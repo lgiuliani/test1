@@ -28,7 +28,7 @@ static uint8_t period;
  * Scroll up
  *
  */
-uint8_t
+scroll_t
 scroll_up(void)
 {
   uint8_t i, j;
@@ -96,7 +96,7 @@ scroll_up(void)
  * Scroll down
  *
  */
-uint8_t
+scroll_t
 scroll_down(void)
 {
   uint8_t i, j;

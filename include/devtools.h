@@ -16,7 +16,7 @@
 
 #include "system.h"
 
-extern uint8_t devtools_run(void);
+extern screen_status_t devtools_run(void);
 
 #endif
 

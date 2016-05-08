@@ -26,7 +26,7 @@
  *
  * return: SCREEN_RUNNING, SCREEN_DONE, SCREEN_EXIT
  */
-uint8_t
+screen_status_t
 screen_xrick(void)
 {
 	static uint8_t seq = 0;

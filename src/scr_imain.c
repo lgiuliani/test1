@@ -26,7 +26,7 @@
  *
  * return: SCREEN_RUNNING, SCREEN_DONE, SCREEN_EXIT
  */
-uint8_t
+screen_status_t
 screen_introMain(void)
 {
   static uint8_t seq = 0;
@@ -138,9 +138,9 @@ screen_introMain(void)
   case 6:  /* wait for key released */
     if (!(control.fire)) {
       if (seen++ == 0)
-	seq = 1;
+        seq = 1;
       else
-	seq = 7;
+        seq = 7;
     }
     break;
   }
