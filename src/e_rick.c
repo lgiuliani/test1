@@ -153,7 +153,7 @@ e_rick_move_horizontaly(void)
 
     if (x < 0 || x >= 0xe8) {  /* prev/next submap */
         game_chsm = true;
-        E_RICK_ENT.x = (isRickOnLeft == true)? 0xe2 : 0x04;
+        E_RICK_ENT.x = (isRickOnLeft)? 0xe2 : 0x04;
         return;
     }
 
